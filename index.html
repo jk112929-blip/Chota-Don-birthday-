@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Chota Don 💖 | Birthday Surprise</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+ color:white;
+ background:radial-gradient(circle at top,#ffb6d9,#9b8cff 45%,#15152e);
+ overflow-x:hidden;
+}
+
+section{
+ min-height:100vh;
+ display:none;
+ place-items:center;
+ padding:25px 16px;
+ text-align:center;
+}
+
+section.active{display:grid}
+
+.card{
+ width:100%;
+ max-width:650px;
+ padding:30px 22px;
+ border-radius:30px;
+ background:rgba(255,255,255,.14);
+ backdrop-filter:blur(15px);
+ border:1px solid rgba(255,255,255,.3);
+ box-shadow:0 20px 70px rgba(0,0,0,.35);
+}
+
+h1{
+ font-size:clamp(2rem,9vw,4rem);
+ margin:8px 0 18px;
+}
+
+h2{font-size:1.8rem}
+
+p{
+ line-height:1.7;
+}
+
+button{
+ border:0;
+ padding:14px 24px;
+ margin:7px;
+ border-radius:999px;
+ background:white;
+ color:#7c3aed;
+ font-size:1rem;
+ font-weight:800;
+ cursor:pointer;
+ box-shadow:0 8px 25px rgba(0,0,0,.2);
+}
+
+button:active{
+ transform:scale(.95);
+}
+
+.gift{
+ font-size:115px;
+ animation:floatGift 2s ease-in-out infinite;
+}
+
+@keyframes floatGift{
+ 50%{transform:translateY(-18px) rotate(4deg)}
+}
+
+.heart{
+ position:fixed;
+ bottom:-30px;
+ pointer-events:none;
+ animation:heartUp 5s linear forwards;
+ z-index:10;
+}
+
+@keyframes heartUp{
+ to{
+  transform:translateY(-110vh) rotate(360deg);
+  opacity:0;
+ }
+}
+
+.pin{
+ width:230px;
+ padding:15px;
+ border:0;
+ border-radius:18px;
+ text-align:center;
+ font-size:2rem;
+ letter-spacing:10px;
+ outline:none;
+}
+
+.avatar{
+ width:190px;
+ height:190px;
+ margin:auto;
+ border-radius:50%;
+ display:grid;
+ place-items:center;
+ font-size:80px;
+ background:linear-gradient(135deg,#ff9dcc,#c4b5fd);
+ box-shadow:0 0 55px rgba(255,255,255,.5);
+ animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+ 50%{transform:scale(1.05)}
+}
+
+.message{
+ text-align:left;
+ font-size:1.1rem;
+ line-height:2;
+ white-space:pre-line;
+}
+
+.cake{
+ font-size:110px;
+ cursor:pointer;
+ animation:cakeBounce 1.7s infinite;
+}
+
+@keyframes cakeBounce{
+ 50%{transform:translateY(-12px)}
+}
+
+.cardGrid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+ margin-top:20px;
+}
+
+.mini{
+ padding:20px 12px;
+ border-radius:22px;
+ background:rgba(255,255,255,.15);
+ border:1px solid rgba(255,255,255,.2);
+}
+
+.jar{
+ font-size:100px;
+ cursor:pointer;
+}
+
+.openCard{
+ padding:20px;
+ margin:10px 0;
+ border-radius:20px;
+ background:rgba(255,255,255,.15);
+ cursor:pointer;
+}
+
+#gameHeart{
+ font-size:65px;
+ min-height:90px;
+ cursor:pointer;
+}
+
+.confetti{
+ position:fixed;
+ top:-30px;
+ z-index:20;
+ animation:confettiFall 3s linear forwards;
+ pointer-events:none;
+}
+
+@keyframes confettiFall{
+ to{
+  transform:translateY(110vh) rotate(720deg);
+  opacity:0;
+ }
+}
+
+.quizOption{
+ display:block;
+ width:100%;
+}
+
+.secret{
+ display:none;
+ margin-top:20px;
+ padding:20px;
+ border-radius:20px;
+ background:rgba(255,255,255,.16);
+}
+
+.glow{
+ text-shadow:0 0 15px white,0 0 35px #ff7bc8;
+}
+
+.small{
+ opacity:.7;
+ font-size:.85rem;
+}
+
+@media(max-width:500px){
+ .cardGrid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<!-- 1 -->
+<section id="s1" class="active">
+<div class="card">
+
+<div class="gift">🎁</div>
+
+<h1 class="glow">एक छोटा सा Surprise 💖</h1>
+
+<p>
+ये कोई normal birthday wish नहीं है... 👀<br>
+इसे पूरा खोलना पड़ेगा।
+</p>
+
+<button onclick="go(2)">
+OPEN MY GIFT ✨
+</button>
+
+</div>
+</section>
+
+
+<!-- 2 PIN -->
+<section id="s2">
+<div class="card">
+
+<h1>🔐 Secret Entry</h1>
+
+<p>Chota Don के लिए secret PIN डालो 👀💖</p>
+
+<input
+ id="pin"
+ class="pin"
+ maxlength="4"
+ inputmode="numeric"
+ type="password"
+>
+
+<br>
+
+<button onclick="unlock()">
+UNLOCK 💗
+</button>
+
+<p id="pinError"></p>
+
+</div>
+</section>
+
+
+<!-- 3 -->
+<section id="s3">
+<div class="card">
+
+<div class="avatar">💖</div>
+
+<h1>
+Happy Birthday<br>
+<span class="glow">Chota Don 💖</span>
+</h1>
+
+<p>
+1 September 2010 🎂<br>
+आज का दिन थोड़ा ज्यादा special है... ✨
+</p>
+
+<button onclick="go(4)">
+START THE SURPRISE 🎉
+</button>
+
+</div>
+</section>
+
+
+<!-- 4 MESSAGE -->
+<section id="s4">
+<div class="card">
+
+<h1>💌 A Little Message</h1>
+
+<div id="typedMessage" class="message"></div>
+
+<button onclick="go(5)">
+NEXT 🥹❤️
+</button>
+
+</div>
+</section>
+
+
+<!-- 5 FAVOURITE WOMAN -->
+<section id="s5">
+<div class="card">
+
+<h1>👑 My Favourite Woman</h1>
+
+<p class="glow">
+In a world full of people...<br>
+you'll always be my favourite woman. ❤️
+</p>
+
+<div class="cardGrid">
+
+<div class="mini">🌸 तुम्हारी smile</div>
+<div class="mini">💖 तुम्हारा दिल</div>
+<div class="mini">✨ तुम्हारी बातें</div>
+<div class="mini">🥹 तुम्हारी मासूमियत</div>
+<div class="mini">🌙 तुम्हारी presence</div>
+<div class="mini">👑 बस तुम</div>
+
+</div>
+
+<button onclick="go(6)">
+WHY YOU'RE SPECIAL 💕
+</button>
+
+</div>
+</section>
+
+
+<!-- 6 -->
+<section id="s6">
+<div class="card">
+
+<h1>🌷 Why You're Special</h1>
+
+<div class="openCard">💗 क्योंकि तुम्हारी smile mood ठीक कर सकती है।</div>
+<div class="openCard">🌸 क्योंकि तुम ordinary moments को special बना देती हो।</div>
+<div class="openCard">✨ क्योंकि तुम्हारी presence ही काफी है।</div>
+<div class="openCard">🫶 क्योंकि तुम्हारे साथ छोटी चीजें भी memories बन जाती हैं।</div>
+<div class="openCard">👑 क्योंकि मेरे लिए तुम सिर्फ कोई नहीं हो।</div>
+<div class="openCard">❤️ क्योंकि तुम मेरी favourite woman हो।</div>
+
+<button onclick="go(7)">
+CAKE TIME 🎂
+</button>
+
+</div>
+</section>
+
+
+<!-- 7 CAKE -->
+<section id="s7">
+<div class="card">
+
+<h1>🎂 Make A Wish!</h1>
+
+<div class="cake" onclick="blowCake()">
+🎂
+</div>
+
+<p id="cakeText">
+Cake पर tap करो और candles बुझाओ ✨
+</p>
+
+<button onclick="cutCake()">
+🔪 CUT THE CAKE
+</button>
+
+<button onclick="go(8)">
+CONTINUE 💖
+</button>
+
+</div>
+</section>
+
+
+<!-- 8 QUIZ -->
+<section id="s8">
+<div class="card">
+
+<h1>💖 Cute Quiz</h1>
+
+<p id="question"></p>
+
+<div id="options"></div>
+
+<p id="quizResult"></p>
+
+<button id="quizNext" style="display:none" onclick="nextQuestion()">
+NEXT 💕
+</button>
+
+</div>
+</section>
+
+
+<!-- 9 MEMORY JAR -->
+<section id="s9">
+<div class="card">
+
+<h1>🫙 Memory Jar</h1>
+
+<p>
+Jar को tap करो... शायद कोई secret message मिले 👀
+</p>
+
+<div class="jar" onclick="randomMemory()">
+🫙
+</div>
+
+<p id="memoryText" class="glow"></p>
+
+<button onclick="go(10)">
+OPEN WHEN... 🫶
+</button>
+
+</div>
+</section>
+
+
+<!-- 10 OPEN WHEN -->
+<section id="s10">
+<div class="card">
+
+<h1>🫶 Open When...</h1>
+
+<div class="openCard" onclick="showOpen('sad')">
+🥺 जब तुम उदास हो
+</div>
+
+<div class="openCard" onclick="showOpen('miss')">
+💭 जब मेरी याद आए
+</div>
+
+<div class="openCard" onclick="showOpen('smile')">
+😊 जब तुम्हें smile चाहिए
+</div>
+
+<div id="openSecret" class="secret"></div>
+
+<button onclick="go(11)">
+🎮 PLAY A GAME
+</button>
+
+</div>
+</section>
+
+
+<!-- 11 GAME -->
+<section id="s11">
+<div class="card">
+
+<h1>🎮 Catch The Hearts</h1>
+
+<p>
+15 seconds में जितने hearts पकड़ सको! ❤️
+</p>
+
+<button onclick="startGame()">
+START GAME
+</button>
+
+<div id="gameHeart"></div>
+
+<p id="gameScore"></p>
+
+<button onclick="go(12)">
+FINAL SURPRISE ✨
+</button>
+
+</div>
+</section>
+
+
+<!-- 12 SECRET -->
+<section id="s12">
+<div class="card">
+
+<h1>💌 One Secret...</h1>
+
+<p>
+इतने सारे surprises के बाद<br>
+एक आखिरी बात बाकी है।
+</p>
+
+<button onclick="revealLove()">
+OPEN SECRET 💖
+</button>
+
+<div id="loveSecret" class="secret">
+
+<h2>💍❤️</h2>
+
+<p class="glow">
+Main ek din aapko apni biwi banaunga. ❤️🥹
+</p>
+
+<p>
+ये promise मज़ाक में नहीं...<br>
+बहुत प्यार से लिखा है। 💖
+</p>
+
+</div>
+
+<button onclick="go(13)">
+FINAL PAGE 🌙
+</button>
+
+</div>
+</section>
+
+
+<!-- 13 FINAL -->
+<section id="s13">
+<div class="card">
+
+<div class="gift">💝</div>
+
+<h1 class="glow">
+Happy Birthday,<br>
+Chota Don 💖
+</h1>
+
+<p class="message">
+तुम हमेशा खुश रहो। 🌸
+
+तुम्हारी हर wish पूरी हो,
+तुम्हारे सारे dreams पूरे हों,
+और तुम्हारी life हमेशा प्यार,
+खुशियों और beautiful memories से भरी रहे। ✨
+
+तुम्हारी smile हमेशा ऐसी ही प्यारी रहे। ❤️
+
+और हाँ...
+
+मेरी favourite woman हमेशा
+मेरी favourite ही रहेगी। 👑💖
+
+Happy Birthday! 🎂🎉
+</p>
+
+<h2>Made with lots of love ❤️</h2>
+
+<p class="small">
+🎵 Tause Naina का अपना/अधिकृत audio
+बाद में music file के रूप में जोड़ा जा सकता है।
+</p>
+
+</div>
+</section>
+
+
+<script>
+
+/* ---------- NAVIGATION ---------- */
+
+function go(n){
+
+ document.querySelectorAll("section")
+ .forEach(s=>s.classList.remove("active"));
+
+ document.getElementById("s"+n)
+ .classList.add("active");
+
+ createHearts(7);
+
+ window.scrollTo(0,0);
+}
+
+
+/* ---------- PIN ---------- */
+
+function unlock(){
+
+ let pin=document.getElementById("pin").value;
+
+ if(pin==="2509"){
+   go(3);
+ }else{
+   document.getElementById("pinError").textContent=
+   "PIN गलत है 😜 फिर से try करो!";
+ }
+}
+
+
+/* ---------- HEARTS ---------- */
+
+function createHearts(count){
+
+ for(let i=0;i<count;i++){
+
+   let h=document.createElement("div");
+
+   h.className="heart";
+
+   h.textContent=
+   ["❤️","💖","💕","✨","🌸"][Math.floor(Math.random()*5)];
+
+   h.style.left=Math.random()*100+"vw";
+
+   h.style.fontSize=
+   (18+Math.random()*25)+"px";
+
+   h.style.animationDelay=
+   Math.random()+"s";
+
+   document.body.appendChild(h);
+
+   setTimeout(()=>h.remove(),6000);
+ }
+}
+
+
+/* ---------- MESSAGE ---------- */
+
+const message=`Happy Birthday to my beautiful sister! 🎂🎉❤️
+
+आज का दिन तुम्हारे लिए ढेर सारी खुशियाँ,
+प्यार, success और beautiful memories लेकर आए। ✨
+
+तुम हमेशा खुश रहो,
+मुस्कुराती रहो और तुम्हारे सारे dreams पूरे हों। 💖
+
+तुम्हारी life का हर नया साल
+पिछले साल से भी ज्यादा खूबसूरत हो।
+
+Once again,
+Happy Birthday, Chota Don! ❤️🎉`;
+
+let char=0;
+
+function typeMessage(){
+
+ if(char<message.length){
+
+   document.getElementById("typedMessage")
+   .textContent=message.slice(0,char+1);
+
+   char++;
+
+   setTimeout(typeMessage,25);
+ }
+}
+
+typeMessage();
+
+
+/* ---------- CAKE ---------- */
+
+function blowCake(){
+
+ document.getElementById("cakeText").textContent=
+ "🎉 Candles बुझ गईं! अब एक प्यारी सी wish करो! 💖";
+
+ createConfetti(50);
+}
+
+function cutCake(){
+
+ document.getElementById("cakeText").textContent=
+ "🔪🎂 Cake कट गया! सबसे पहला piece Chota Don के लिए! 💖";
+
+ createConfetti(90);
+}
+
+function createConfetti(count){
+
+ for(let i=0;i<count;i++){
+
+   let c=document.createElement("div");
+
+   c.className="confetti";
+
+   c.textContent=
+   ["🎉","✨","💖","🌸","⭐"][Math.floor(Math.random()*5)];
+
+   c.style.left=Math.random()*100+"vw";
+
+   c.style.animationDelay=
+   Math.random()*1.5+"s";
+
+   c.style.fontSize=
+   (15+Math.random()*20)+"px";
+
+   document.body.appendChild(c);
+
+   setTimeout(()=>c.remove(),4500);
+ }
+}
+
+
+/* ---------- QUIZ ---------- */
+
+const quiz=[
+
+ {
+  q:"Birthday surprise में सबसे जरूरी चीज क्या है? 💖",
+  a:[
+   "Cake 🎂",
+   "Gift 🎁",
+   "Love ❤️",
+   "सब कुछ ✨"
+  ],
+  correct:3
+ },
+
+ {
+  q:"एक perfect birthday memory किससे बनती है?",
+  a:[
+   "प्यार ❤️",
+   "अच्छी यादें ✨",
+   "खुशी 😊",
+   "तीनों 💖"
+  ],
+  correct:3
+ },
+
+ {
+  q:"Chota Don के लिए सबसे cute title कौन सा है? 👑",
+  a:[
+   "Queen 👑",
+   "Princess 🌸",
+   "Favourite Woman 💖",
+   "Birthday Star ⭐"
+  ],
+  correct:2
+ }
+
+];
+
+let qIndex=0;
+let qScore=0;
+
+function renderQuiz(){
+
+ let q=quiz[qIndex];
+
+ document.getElementById("question")
+ .textContent=q.q;
+
+ let box=document.getElementById("options");
+
+ box.innerHTML="";
+
+ q.a.forEach((answer,index)=>{
+
+   let b=document.createElement("button");
+
+   b.className="quizOption";
+
+   b.textContent=answer;
+
+   b.onclick=()=>answerQuiz(index);
+
+   box.appendChild(b);
+ });
+
+ document.getElementById("quizResult").textContent="";
+
+ document.getElementById("quizNext").style.display="none";
+}
+
+function answerQuiz(index){
+
+ let q=quiz[qIndex];
+
+ if(index===q.correct){
+
+   qScore++;
+
+   document.getElementById("quizResult")
+   .textContent="Awww! Perfect answer 💖✨";
+
+ }else{
+
+   document.getElementById("quizResult")
+   .textContent="Cute choice 😌💖";
+ }
+
+ document
+ .querySelectorAll(".quizOption")
+ .forEach(b=>b.disabled=true);
+
+ document.getElementById("quizNext")
+ .style.display="inline-block";
+}
+
+function nextQuestion(){
+
+ qIndex++;
+
+ if(qIndex<quiz.length){
+
+   renderQuiz();
+
+ }else{
+
+   document.getElementById("question")
+   .textContent="Quiz Complete! 🎉";
+
+   document.getElementById("options")
+   .innerHTML="";
+
+   document.getElementById("quizResult")
+   .textContent=
+   "Your score: "+qScore+"/"+quiz.length+" 💖";
+
+   document.getElementById("quizNext")
+   .textContent="NEXT 🫙";
+
+   document.getElementById("quizNext")
+   .onclick=()=>go(9);
+ }
+}
+
+renderQuiz();
+
+
+/* ---------- MEMORY JAR ---------- */
+
+const memories=[
+
+"तुम्हारी smile सच में बहुत प्यारी है। ❤️",
+
+"कुछ लोग memories बन जाते हैं... तुम उनमें से हो। 🥹",
+
+"तुम्हारे लिए हमेशा एक special जगह रहेगी। 💖",
+
+"आज का दिन तुम्हारी तरह beautiful हो। 🌸",
+
+"तुम खुश रहो—बस यही wish है। ✨",
+
+"Favourite woman. Always. 👑❤️"
+
+];
+
+function randomMemory(){
+
+ let text=
+ memories[Math.floor(Math.random()*memories.length)];
+
+ document.getElementById("memoryText")
+ .textContent=text;
+
+}
+
+
+/* ---------- OPEN WHEN ---------- */
+
+function showOpen(type){
+
+ let box=document.getElementById("openSecret");
+
+ box.style.display="block";
+
+ if(type==="sad"){
+
+   box.textContent=
+   "अगर कभी उदास हो, तो याद रखना—तुम्हारी smile बहुत valuable है। ❤️";
+
+ }else if(type==="miss"){
+
+   box.textContent=
+   "अगर मेरी याद आए... तो बस smile कर देना। शायद मैं भी उसी moment तुम्हें याद कर रहा हूँ। 💭❤️";
+
+ }else{
+
+   box.textContent=
+   "Smile करो Chota Don! 😭💖 तुम्हारी smile ही इस पूरी website की सबसे खूबसूरत चीज़ है।";
+
+ }
+}
+
+
+/* ---------- HEART GAME ---------- */
+
+let playing=false;
+let score=0;
+let time=15;
+
+function startGame(){
+
+ if(playing)return;
+
+ playing=true;
+ score=0;
+ time=15;
+
+ let heart=document.getElementById("gameHeart");
+ let info=document.getElementById("gameScore");
+
+ function spawn(){
+
+   if(!playing)return;
+
+   heart.textContent="❤️";
+
+   heart.onclick=function(){
+
+     score++;
+
+     heart.textContent="✨";
+
+     setTimeout(spawn,100);
+
+   };
+
+   setTimeout(()=>{
+
+     if(heart.textContent==="❤️"){
+       spawn();
+     }
+
+   },500+Math.random()*700);
+ }
+
+ spawn();
+
+ let timer=setInterval(()=>{
+
+   time--;
+
+   info.textContent=
+   "Time: "+time+" sec | Hearts: "+score;
+
+   if(time<=0){
+
+     clearInterval(timer);
+
+     playing=false;
+
+     heart.textContent="💖";
+
+     info.textContent=
+     "Game Over! Score: "+score+" ❤️";
+
+   }
+
+ },1000);
+}
+
+
+/* ---------- SECRET LOVE ---------- */
+
+function revealLove(){
+
+ document.getElementById("loveSecret")
+ .style.display="block";
+
+ createConfetti(60);
+
+}
+
+</script>
+
+</body>
+  </html>

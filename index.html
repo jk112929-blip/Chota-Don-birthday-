@@ -9,6 +9,10 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
+<audio id="bgMusic" loop>
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+<button onclick="toggleMusic()" id="musicBtn">🎵 Music ON</button>
 margin:0;color:#fff;font-family:Georgia,serif;
 background:
 radial-gradient(circle at 15% 15%,#ff8fc955,transparent 30%),
@@ -337,6 +341,18 @@ sometimes, it's a person. 🏡❤️
 </section>
 
 <script>
+  const bgMusic = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
+
+function toggleMusic(){
+  if(bgMusic.paused){
+    bgMusic.play();
+    musicBtn.textContent="🔇 Music OFF";
+  }else{
+    bgMusic.pause();
+    musicBtn.textContent="🎵 Music ON";
+  }
+}
 function go(n){
 document.querySelectorAll("section").forEach(x=>x.classList.remove("active"));
 document.getElementById("s"+n).classList.add("active");

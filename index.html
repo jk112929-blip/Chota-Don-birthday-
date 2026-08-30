@@ -66,58 +66,6 @@
             z-index: 2;
         }
 
-        /* Music Controls UI */
-        .audio-control-btn {
-            position: fixed;
-            top: 18px;
-            right: 18px;
-            z-index: 9999;
-            background: rgba(18, 14, 34, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            padding: 8px 14px;
-            border-radius: 30px;
-            color: var(--text-main);
-            font-size: 0.82rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            max-width: 80vw;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .audio-control-btn:active {
-            transform: scale(0.95);
-        }
-
-        .pulse-icon {
-            display: inline-block;
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background-color: var(--accent-pink);
-            box-shadow: 0 0 10px var(--accent-pink);
-            flex-shrink: 0;
-            animation: pulse-dot 1.5s infinite alternate;
-        }
-
-        .pulse-icon.paused {
-            background-color: #777;
-            box-shadow: none;
-            animation: none;
-        }
-
-        @keyframes pulse-dot {
-            0% { transform: scale(0.9); opacity: 0.7; }
-            100% { transform: scale(1.3); opacity: 1; }
-        }
-
         /* Scene Container Frame */
         .app-container {
             width: 100%;
@@ -128,7 +76,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 75px 16px 25px 16px;
+            padding: 40px 16px 25px 16px;
         }
 
         .scene {
@@ -146,6 +94,25 @@
             display: flex;
             opacity: 1;
             transform: translateY(0) scale(1);
+        }
+
+        /* Fade out screen transition */
+        .fade-out-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 99999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 3s ease-in-out;
+        }
+
+        .fade-out-overlay.active {
+            opacity: 1;
+            pointer-events: all;
         }
 
         /* Glassmorphism Cards */
@@ -270,6 +237,104 @@
         .key-btn:active {
             background: rgba(255, 77, 141, 0.3);
             transform: scale(0.92);
+        }
+
+        /* Envelopes Feature */
+        .envelopes-grid {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .envelope-card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            width: 75px;
+            height: 75px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.8rem;
+        }
+
+        .envelope-card.opened {
+            background: rgba(255, 77, 141, 0.25);
+            border-color: var(--accent-pink);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 77, 141, 0.4);
+        }
+
+        /* Interactive Stars Feature */
+        .stars-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .future-star {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .future-star:active {
+            transform: scale(0.9);
+        }
+
+        .star-icon {
+            font-size: 2.8rem;
+            filter: drop-shadow(0 0 10px var(--gold-glow));
+            margin-bottom: 6px;
+        }
+
+        /* Secret Locked Envelope Feature */
+        .locked-envelope-box {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px dashed var(--accent-pink);
+            border-radius: 20px;
+            padding: 25px 15px;
+            margin: 15px 0 20px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .locked-envelope-box:active {
+            transform: scale(0.98);
+        }
+
+        /* Romantic Choices Game Feature */
+        .choice-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            justify-content: center;
+        }
+
+        .choice-btn {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            padding: 12px 8px;
+            border-radius: 14px;
+            color: #fff;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .choice-btn.selected {
+            background: rgba(255, 77, 141, 0.3);
+            border-color: var(--accent-pink);
+            font-weight: 600;
+            box-shadow: 0 0 12px rgba(255, 77, 141, 0.3);
         }
 
         /* Scrollable Message Box for Original Full Message */
@@ -440,9 +505,9 @@
             color: #fff;
         }
 
-        /* Picture Frame Placeholder */
+        /* Photo Frame Placeholder */
         .photo-frame {
-            width: 210px;
+            width: 220px;
             height: 250px;
             border: 2px dashed var(--accent-pink);
             border-radius: 18px;
@@ -454,6 +519,12 @@
             padding: 15px;
             background: rgba(255, 77, 141, 0.05);
             box-shadow: 0 0 25px rgba(255, 77, 141, 0.15);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-frame:active {
+            transform: scale(0.96);
         }
 
         /* Mountain Silhouette Graphic */
@@ -533,17 +604,7 @@
     <!-- Stars Background Canvas -->
     <canvas id="star-canvas"></canvas>
     <div id="particle-container"></div>
-
-    <!-- Audio Element with Source -->
-    <audio id="bg-music" loop preload="auto">
-        <source src="song.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- Global Music Controls -->
-    <button class="audio-control-btn" id="music-toggle" onclick="toggleAudioExplicit()">
-        <span class="pulse-icon paused" id="music-pulse"></span>
-        <span id="music-text">Music OFF</span>
-    </button>
+    <div class="fade-out-overlay" id="fade-overlay"></div>
 
     <div class="app-container">
 
@@ -640,12 +701,34 @@
                         <div><strong>Your Innocence</strong><br><span style="font-size:0.8rem; color:var(--text-sub);">The subtle, adorable things you do effortlessly.</span></div>
                     </div>
                 </div>
-                <button class="btn-cinematic" onclick="goToScene(6)">MAKE A WISH 🎂</button>
+                <button class="btn-cinematic" onclick="goToScene(6)">SECRET LOVE LETTERS 💌</button>
             </div>
         </div>
 
-        <!-- SCENE 6: CAKE CUTTING -->
+        <!-- NEW FEATURE 1: SECRET LOVE LETTERS -->
         <div class="scene" id="scene-6">
+            <div class="glass-card">
+                <h2 class="title-cinematic">Secret Love Letters 💌</h2>
+                <p class="subtitle">Tap each envelope to reveal a tiny note from my heart</p>
+                
+                <div class="envelopes-grid">
+                    <div class="envelope-card" id="env-1" onclick="openEnvelope(1)">✉️</div>
+                    <div class="envelope-card" id="env-2" onclick="openEnvelope(2)">✉️</div>
+                    <div class="envelope-card" id="env-3" onclick="openEnvelope(3)">✉️</div>
+                    <div class="envelope-card" id="env-4" onclick="openEnvelope(4)">✉️</div>
+                    <div class="envelope-card" id="env-5" onclick="openEnvelope(5)">✉️</div>
+                </div>
+
+                <div class="glass-card" id="envelope-display" style="min-height:90px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.3); padding:15px;">
+                    <p style="font-style:italic; font-size:0.92rem; color:var(--accent-glow);" id="envelope-text">Select an envelope above... ✨</p>
+                </div>
+
+                <button class="btn-cinematic" onclick="goToScene(7)">MAKE A WISH 🎂</button>
+            </div>
+        </div>
+
+        <!-- SCENE 7: CAKE CUTTING -->
+        <div class="scene" id="scene-7">
             <div class="glass-card">
                 <h2 class="title-cinematic">Make A Wish</h2>
                 <div class="interactive-area">
@@ -663,8 +746,8 @@
             </div>
         </div>
 
-        <!-- SCENE 7: BALLOON POPPING GAME -->
-        <div class="scene" id="scene-7">
+        <!-- SCENE 8: BALLOON POPPING GAME -->
+        <div class="scene" id="scene-8">
             <div class="glass-card">
                 <h2 class="title-cinematic">Pop The Balloons!</h2>
                 <div class="game-stats">
@@ -673,12 +756,12 @@
                 </div>
                 <div class="game-canvas" id="balloon-canvas"></div>
                 <button class="btn-cinematic" id="balloon-start-btn" onclick="startBalloonGame()">START GAME 🎈</button>
-                <button class="btn-cinematic" id="balloon-next-btn" style="display:none;" onclick="goToScene(8)">NEXT 🎬</button>
+                <button class="btn-cinematic" id="balloon-next-btn" style="display:none;" onclick="goToScene(9)">NEXT 🎬</button>
             </div>
         </div>
 
-        <!-- SCENE 8: MAGIC MEMORY JAR -->
-        <div class="scene" id="scene-8">
+        <!-- SCENE 9: MAGIC MEMORY JAR -->
+        <div class="scene" id="scene-9">
             <div class="glass-card">
                 <h2 class="title-cinematic">Magic Memory Jar</h2>
                 <p class="subtitle">Tap the jar to draw out a sweet thought 🪄</p>
@@ -686,12 +769,12 @@
                 <p class="subtitle" id="jar-message" style="min-height: 50px; font-style: italic; color: var(--accent-glow);">
                     "Tap the jar..."
                 </p>
-                <button class="btn-cinematic" onclick="goToScene(9)">OPEN WHEN... ✉️</button>
+                <button class="btn-cinematic" onclick="goToScene(10)">OPEN WHEN... ✉️</button>
             </div>
         </div>
 
-        <!-- SCENE 9: OPEN WHEN -->
-        <div class="scene" id="scene-9">
+        <!-- SCENE 10: OPEN WHEN -->
+        <div class="scene" id="scene-10">
             <div class="glass-card">
                 <h2 class="title-cinematic">Open When...</h2>
                 <p class="subtitle">For whenever you need a little warm hug</p>
@@ -703,12 +786,43 @@
                 <div class="glass-card" id="open-when-card" style="display:none; background:rgba(0,0,0,0.3); padding:15px; margin-bottom:15px;">
                     <p id="open-when-text" style="font-size:0.9rem; line-height:1.5; color:#fff;"></p>
                 </div>
-                <button class="btn-cinematic" onclick="goToScene(10)">PLAY FUN QUIZZES 🤪</button>
+                <button class="btn-cinematic" onclick="goToScene(11)">CHOOSE OUR FAVORITES 🫀</button>
             </div>
         </div>
 
-        <!-- SCENE 10: EXTRA FUNNY QUIZZES -->
-        <div class="scene" id="scene-10">
+        <!-- NEW FEATURE 4: CHOOSE ONE ROMANTIC GAME -->
+        <div class="scene" id="scene-11">
+            <div class="glass-card">
+                <h2 class="title-cinematic">Choose Our Favorites 🫀</h2>
+                <p class="subtitle" style="margin-bottom:15px;">Pick what your heart prefers most!</p>
+                
+                <div class="choice-row" id="row-1">
+                    <button class="choice-btn" onclick="selectChoice(1, 'Warm Hugs 🫂')">Warm Hugs 🫂</button>
+                    <button class="choice-btn" onclick="selectChoice(1, 'Holding Hands 🤝')">Holding Hands 🤝</button>
+                </div>
+                <div class="choice-row" id="row-2">
+                    <button class="choice-btn" onclick="selectChoice(2, 'Peaceful Mountains 🏔️')">Peaceful Mountains 🏔️</button>
+                    <button class="choice-btn" onclick="selectChoice(2, 'Sunset Beach 🏖️')">Sunset Beach 🏖️</button>
+                </div>
+                <div class="choice-row" id="row-3">
+                    <button class="choice-btn" onclick="selectChoice(3, 'Late-Night Talks 🌙')">Late-Night Talks 🌙</button>
+                    <button class="choice-btn" onclick="selectChoice(3, 'Morning Walks 🌅')">Morning Walks 🌅</button>
+                </div>
+                <div class="choice-row" id="row-4">
+                    <button class="choice-btn" onclick="selectChoice(4, 'Cosy Movie Night 🍿')">Cosy Movie Night 🍿</button>
+                    <button class="choice-btn" onclick="selectChoice(4, 'Quiet Long Drive 🚗')">Quiet Long Drive 🚗</button>
+                </div>
+
+                <div class="glass-card" id="choices-result" style="display:none; background:rgba(0,0,0,0.35); padding:15px; margin-top:10px;">
+                    <p style="font-size:0.92rem; color:var(--accent-glow); line-height:1.6;" id="choices-result-text"></p>
+                </div>
+
+                <button class="btn-cinematic" id="choices-next-btn" style="margin-top:10px;" onclick="goToScene(12)">PLAY FUN QUIZZES 🤪</button>
+            </div>
+        </div>
+
+        <!-- SCENE 12: EXTRA FUNNY & ROMANTIC QUIZZES (TOTAL 8 QUESTIONS) -->
+        <div class="scene" id="scene-12">
             <div class="glass-card">
                 <h2 class="title-cinematic">Chota Don Special Quiz</h2>
                 <div id="quiz-container">
@@ -720,8 +834,8 @@
             </div>
         </div>
 
-        <!-- SCENE 11: ROMANTIC GAME (CATCH MY LOVE) -->
-        <div class="scene" id="scene-11">
+        <!-- SCENE 13: ROMANTIC GAME (CATCH MY LOVE) -->
+        <div class="scene" id="scene-13">
             <div class="glass-card">
                 <h2 class="title-cinematic">Catch My Love ❤️</h2>
                 <p class="subtitle" style="margin-bottom: 10px;">Tap as many falling hearts as you can!</p>
@@ -731,26 +845,63 @@
                 </div>
                 <div class="game-canvas" id="heart-canvas"></div>
                 <button class="btn-cinematic" id="heart-start-btn" onclick="startHeartGame()">START CATCHING 💖</button>
-                <button class="btn-cinematic" id="heart-next-btn" style="display:none;" onclick="goToScene(12)">NEXT SCENE 🎬</button>
+                <button class="btn-cinematic" id="heart-next-btn" style="display:none;" onclick="goToScene(14)">OUR FUTURE 🌙</button>
             </div>
         </div>
 
-        <!-- SCENE 12: RESERVED FRAME & MOUNTAIN DREAM -->
-        <div class="scene" id="scene-12">
+        <!-- NEW FEATURE 2: OUR FUTURE (3 INTERACTIVE STARS) -->
+        <div class="scene" id="scene-14">
             <div class="glass-card">
-                <h2 class="title-cinematic">A Reserved Frame</h2>
-                <div class="photo-frame">
-                    <span style="font-size: 2.5rem; margin-bottom: 10px;">🖼️</span>
-                    <strong style="font-size:0.9rem; color:var(--accent-pink);">One Picture Is Missing...</strong>
+                <h2 class="title-cinematic">Our Future 🌙</h2>
+                <p class="subtitle">Tap each star to peek into our tomorrow</p>
+
+                <div class="stars-container">
+                    <div class="future-star" onclick="revealStar('home')">
+                        <span class="star-icon">🏡</span>
+                        <span style="font-size:0.8rem; color:var(--text-sub);">Home</span>
+                    </div>
+                    <div class="future-star" onclick="revealStar('trip')">
+                        <span class="star-icon">🏔️</span>
+                        <span style="font-size:0.8rem; color:var(--text-sub);">Trip</span>
+                    </div>
+                    <div class="future-star" onclick="revealStar('memory')">
+                        <span class="star-icon">📸</span>
+                        <span style="font-size:0.8rem; color:var(--text-sub);">Memory</span>
+                    </div>
                 </div>
+
+                <div class="glass-card" id="star-display" style="min-height:90px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.35); padding:15px;">
+                    <p style="font-style:italic; font-size:0.92rem; color:var(--accent-glow);" id="star-text">Tap a star to reveal a scene... ✨</p>
+                </div>
+
+                <button class="btn-cinematic" onclick="goToScene(15)">FUTURE PHOTO BOOTH 📸</button>
+            </div>
+        </div>
+
+        <!-- NEW FEATURE 5: FUTURE PHOTO BOOTH -->
+        <div class="scene" id="scene-15">
+            <div class="glass-card">
+                <h2 class="title-cinematic">Future Photo Booth</h2>
+                
+                <div class="photo-frame" onclick="triggerFrameMagic()">
+                    <span style="font-size: 2.5rem; margin-bottom: 10px;">🖼️</span>
+                    <strong style="font-size:0.92rem; color:var(--accent-pink); text-align:center;">Our first picture together — Coming Soon… ❤️</strong>
+                    <span style="font-size:0.75rem; color:var(--text-sub); margin-top:8px;">(Tap the frame ✨)</span>
+                </div>
+
                 <p class="subtitle">
                     "Not because there isn't a story...<br>
                     but because some memories haven't happened yet.<br><br>
                     <span class="highlight-text">Reserved for a memory we haven't made yet. ❤️</span>"
                 </p>
-                
-                <hr style="border:0; border-top:1px solid var(--glass-border); margin:20px 0;">
 
+                <button class="btn-cinematic" onclick="goToScene(16)">OUR MOUNTAIN DREAM 🏔️</button>
+            </div>
+        </div>
+
+        <!-- SCENE 16: MOUNTAIN DREAM GRAPHIC -->
+        <div class="scene" id="scene-16">
+            <div class="glass-card">
                 <h2 class="title-cinematic" style="font-size: 1.4rem;">Our Mountain Dream</h2>
                 <div class="mountain-graphic">
                     <div class="moon"></div>
@@ -769,14 +920,21 @@
                     Just you. Just me. 🌙🫀"
                 </p>
 
-                <button class="btn-cinematic" onclick="goToScene(13)">FOREVER PROMISE 💍</button>
+                <button class="btn-cinematic" onclick="goToScene(17)">ONE DAY... 💍</button>
             </div>
         </div>
 
-        <!-- SCENE 13: PROMISE -->
-        <div class="scene" id="scene-13">
+        <!-- NEW FEATURE 3: ONE DAY... (LOCKED SECRET ENVELOPE) & SCENE 17: PROMISE -->
+        <div class="scene" id="scene-17">
             <div class="glass-card">
-                <h2 class="title-cinematic">A Forever Promise</h2>
+                <h2 class="title-cinematic">One Day… 💍</h2>
+                <p class="subtitle">A secret lock preserved only for our future</p>
+                
+                <div class="locked-envelope-box" id="locked-envelope" onclick="revealSecretPromise()">
+                    <div style="font-size: 3rem; margin-bottom: 8px;">🔒✉️</div>
+                    <strong style="color: var(--accent-pink); font-size:0.95rem;">Tap to Unlock Secret Promise</strong>
+                </div>
+
                 <div id="promise-hidden" style="display:none; margin: 20px 0;">
                     <h3 class="title-script" style="font-size: 2.5rem; color: #fff;">In Sha Allah... 💍❤️</h3>
                     <p class="subtitle" style="font-size: 1.1rem; color: var(--accent-pink); font-weight: 600;">
@@ -788,13 +946,36 @@
                         But with all the love in my heart.
                     </p>
                 </div>
-                <button class="btn-cinematic" id="promise-btn" onclick="revealPromise()">OPEN THE PROMISE ❤️</button>
-                <button class="btn-cinematic" id="promise-next-btn" style="display:none;" onclick="goToScene(14)">SPECIAL BIRTHDAY WISH 🌸</button>
+
+                <button class="btn-cinematic" id="promise-next-btn" style="display:none;" onclick="goToScene(18)">LISTEN TO MY VOICE 🎙️</button>
             </div>
         </div>
 
-        <!-- SCENE 14: EXTRA BEAUTIFUL BIRTHDAY WISH -->
-        <div class="scene" id="scene-14">
+        <!-- NEW FEATURE 6: VOICE-NOTE SECTION -->
+        <div class="scene" id="scene-18">
+            <div class="glass-card">
+                <div style="font-size: 3rem; margin-bottom: 10px;">🎙️❤️</div>
+                <h2 class="title-cinematic">Voice Note</h2>
+                <p class="subtitle">A special message recorded just for your ears</p>
+                
+                <div style="margin: 20px 0;">
+                    <button class="btn-cinematic" id="voice-note-btn" onclick="playVoiceNote()">
+                        Play something I want you to hear ❤️
+                    </button>
+                </div>
+
+                <audio id="voice-audio" style="display:none;" preload="none">
+                    <source src="voicenote.mp3" type="audio/mpeg">
+                </audio>
+
+                <p id="voice-status" style="font-size: 0.85rem; color: var(--accent-glow); min-height: 20px;"></p>
+
+                <button class="btn-cinematic" onclick="goToScene(19)">SPECIAL BIRTHDAY WISH 🌸</button>
+            </div>
+        </div>
+
+        <!-- SCENE 19: EXTRA BEAUTIFUL BIRTHDAY WISH -->
+        <div class="scene" id="scene-19">
             <div class="glass-card">
                 <div class="title-script">A Special Wish</div>
                 <h2 class="title-cinematic">Happy Birthday To My Favourite Person ✨</h2>
@@ -803,12 +984,12 @@
                     Thank you for bringing so much light, warmth, and laughter into my world. Having you around makes everything feel a little softer, a little brighter, and so much more meaningful.<br><br>
                     May your year ahead be filled with endless smiles, peace, success, and all the love you truly deserve. 🌸✨
                 </p>
-                <button class="btn-cinematic" onclick="goToScene(15)">READ MY FULL LETTER 💌</button>
+                <button class="btn-cinematic" onclick="goToScene(20)">READ MY FULL LETTER 💌</button>
             </div>
         </div>
 
-        <!-- SCENE 15: ORIGINAL UNTOUCHED FULL SPECIAL MESSAGE -->
-        <div class="scene" id="scene-15">
+        <!-- SCENE 20: ORIGINAL UNTOUCHED FULL SPECIAL MESSAGE -->
+        <div class="scene" id="scene-20">
             <div class="glass-card">
                 <div class="title-script">From My Heart</div>
                 <h2 class="title-cinematic" style="font-size: 1.4rem;">My Letter To You</h2>
@@ -817,34 +998,20 @@
                 
                 <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px; flex-wrap: wrap;">
                     <button class="btn-cinematic" id="keep-reading-btn" style="background: rgba(255,255,255,0.12);" onclick="showInstantFullMessage()">KEEP READING / FULL VIEW 📜</button>
-                    <button class="btn-cinematic" onclick="goToScene(16)">FINAL OUTRO 🌙</button>
+                    <button class="btn-cinematic" onclick="goToScene(21)">FINAL OUTRO 🌙</button>
                 </div>
             </div>
         </div>
 
-        <!-- SCENE 16: FINAL CINEMATIC OUTRO -->
-        <div class="scene" id="scene-16">
+        <!-- SCENE 21: FINAL OUTRO & SPECIAL ENDING -->
+        <div class="scene" id="scene-21">
             <div class="glass-card">
-                <h2 class="title-cinematic" style="font-size: 2.2rem;">THE END…? 🌙❤️</h2>
-                
-                <p class="subtitle" style="font-style: italic; margin-bottom: 20px; font-size: 1rem; color: var(--accent-glow);">
-                    "Some stories don't really end…<br>they simply continue in another chapter. ❤️"
-                </p>
+                <h2 class="title-cinematic" style="font-size: 1.8rem;">Happy Birthday, Chota Don.</h2>
+                <p class="title-script" style="font-size: 1.6rem; color: var(--accent-glow); margin-top: 10px;">Until our next chapter… ❤️</p>
 
-                <div style="background: rgba(255,255,255,0.04); padding: 18px; border-radius: 16px; margin-bottom: 20px; text-align: left; font-size: 0.92rem; line-height: 1.9; border: 1px solid rgba(255,255,255,0.08);">
-                    My Favourite Woman. 👑<br>
-                    My safe place. 🫀<br>
-                    My favourite person. ❤️<br>
-                    My favourite feeling. 🌙<br>
-                    My Home. 🏡
-                </div>
+                <div style="font-size: 3.5rem; animation: pulse 1.5s infinite alternate; margin: 25px 0;" id="final-heart">💖</div>
 
-                <div style="font-size: 3.2rem; animation: pulse 1.5s infinite alternate; margin-bottom: 15px;" id="final-heart">💖</div>
-
-                <p class="title-script" style="font-size: 1.8rem; margin-bottom: 5px;">Happy Birthday, Chota Don. ❤️</p>
-                <p class="subtitle" style="font-size: 0.9rem; color: #fff; font-weight: 500;">Always… Home. 🏡</p>
-                
-                <button class="btn-cinematic" onclick="triggerFinalCelebration()">REPLAY CELEBRATION 🎉</button>
+                <button class="btn-cinematic" onclick="startCinematicFadeOut()">END MOVIE 🌙</button>
             </div>
         </div>
 
@@ -892,61 +1059,6 @@
                 else if (name === 'blow') { playTone(300, 0.3, 'sine'); }
                 else if (name === 'sparkle') { playTone(1200, 0.15); }
             } catch(e){}
-        }
-
-        /* Robust Background Music Controller */
-        const bgMusic = document.getElementById('bg-music');
-        const musicPulse = document.getElementById('music-pulse');
-        const musicText = document.getElementById('music-text');
-        
-        bgMusic.volume = 0.4;
-        let isAudioPlaying = false;
-        let audioInitialized = false;
-
-        function updateAudioUI(playing) {
-            if (playing) {
-                isAudioPlaying = true;
-                musicPulse.className = "pulse-icon";
-                musicText.innerText = "Music ON";
-            } else {
-                isAudioPlaying = false;
-                musicPulse.className = "pulse-icon paused";
-                musicText.innerText = "Music OFF";
-            }
-        }
-
-        function attemptPlayAudio() {
-            getAudioContext();
-            if (isAudioPlaying) return;
-            
-            const promise = bgMusic.play();
-            if (promise !== undefined) {
-                promise.then(() => {
-                    updateAudioUI(true);
-                    audioInitialized = true;
-                }).catch(err => {
-                    updateAudioUI(false);
-                });
-            }
-        }
-
-        function toggleAudioExplicit() {
-            playSound('click');
-            getAudioContext();
-
-            if (bgMusic.paused) {
-                const promise = bgMusic.play();
-                if (promise !== undefined) {
-                    promise.then(() => {
-                        updateAudioUI(true);
-                    }).catch(err => {
-                        updateAudioUI(false);
-                    });
-                }
-            } else {
-                bgMusic.pause();
-                updateAudioUI(false);
-            }
         }
 
         /* ORIGINAL UNTOUCHED FULL SPECIAL MESSAGE DATA */
@@ -1021,10 +1133,9 @@ Happy Birthday Home💖`;
             isTransitioning = true;
             
             playSound('click');
-            attemptPlayAudio();
 
-            if (currentScene === 7) resetBalloonGame();
-            if (currentScene === 11) resetHeartGame();
+            if (currentScene === 8) resetBalloonGame();
+            if (currentScene === 13) resetHeartGame();
 
             const current = document.getElementById(`scene-${currentScene}`);
             const next = document.getElementById(`scene-${sceneNum}`);
@@ -1034,9 +1145,9 @@ Happy Birthday Home💖`;
             setTimeout(() => {
                 currentScene = sceneNum;
                 if (next) {
-                    if (sceneNum === 10) resetQuizState();
-                    if (sceneNum === 6) resetCakeState();
-                    if (sceneNum === 15) startMessageTyping();
+                    if (sceneNum === 12) resetQuizState();
+                    if (sceneNum === 7) resetCakeState();
+                    if (sceneNum === 20) startMessageTyping();
                     next.classList.add('active');
                 }
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1058,7 +1169,6 @@ Happy Birthday Home💖`;
 
         function pressPin(digit) {
             playSound('click');
-            attemptPlayAudio();
             if (enteredPin.length < 4) {
                 enteredPin += digit;
                 updatePinDisplay();
@@ -1073,7 +1183,6 @@ Happy Birthday Home💖`;
         }
 
         function checkPin() {
-            attemptPlayAudio();
             if (enteredPin === correctPin) {
                 playSound('correct');
                 createHeartsCluster(20);
@@ -1087,7 +1196,29 @@ Happy Birthday Home💖`;
             }
         }
 
-        /* Scene 6: Cake Actions & Reset */
+        /* Feature 1: Secret Love Letters (5 Envelopes) */
+        const envelopeMessages = {
+            1: "In a world full of noise, your voice is my favorite comfort. 💖",
+            2: "You have no idea how easily you bring a smile to my face. 🌸",
+            3: "My favorite place in the whole wide world will always be by your side. 🫀",
+            4: "Every single day with you feels like a quiet blessing. ✨",
+            5: "No matter how much time passes, you will always be my home. 🏡"
+        };
+
+        function openEnvelope(id) {
+            playSound('sparkle');
+            for (let i = 1; i <= 5; i++) {
+                const env = document.getElementById(`env-${i}`);
+                if (i === id) {
+                    env.classList.add('opened');
+                    env.innerText = "💌";
+                }
+            }
+            document.getElementById('envelope-text').innerText = `"${envelopeMessages[id]}"`;
+            createHeartsCluster(8);
+        }
+
+        /* Scene 7: Cake Actions & Reset */
         function blowCandle() {
             playSound('blow');
             document.getElementById('cake-flame').classList.add('off');
@@ -1101,7 +1232,7 @@ Happy Birthday Home💖`;
             playSound('sparkle');
             createHeartsCluster(30);
             document.getElementById('cake-status').innerText = "Yay! Happy Birthday Chota Don! 🎉";
-            setTimeout(() => goToScene(7), 1500);
+            setTimeout(() => goToScene(8), 1500);
         }
 
         function resetCakeState() {
@@ -1111,7 +1242,7 @@ Happy Birthday Home💖`;
             document.getElementById('cut-btn').style.display = 'none';
         }
 
-        /* Scene 7: Balloon Mini-Game */
+        /* Scene 8: Balloon Mini-Game */
         let balloonScore = 0;
         let balloonTimer = 15;
         let balloonInterval = null;
@@ -1185,7 +1316,7 @@ Happy Birthday Home💖`;
             b.addEventListener('pointerdown', popHandler);
         }
 
-        /* Scene 8: Magic Memory Jar */
+        /* Scene 9: Magic Memory Jar */
         const jarMessages = [
             "Some of our best memories haven't happened yet. 🥹❤️",
             "One day we'll look back at these little moments. ✨",
@@ -1207,7 +1338,7 @@ Happy Birthday Home💖`;
             createHeartsCluster(6);
         }
 
-        /* Scene 9: Open When Messages */
+        /* Scene 10: Open When Messages */
         const openWhenData = {
             sad: "When you are sad, remember that somewhere out there, I am sending you all my love. You are never alone, baccha. 💖",
             miss: "When you miss me, close your eyes and know that I am missing you even more. You are always in my thoughts. 🤧🫀",
@@ -1222,8 +1353,32 @@ Happy Birthday Home💖`;
             card.style.display = 'block';
         }
 
-        /* Scene 10: Quiz Data & Mechanics (Includes 4 Extra Funny Quizzes) */
+        /* Feature 4: Choose One Romantic Game */
+        let userChoices = { 1: null, 2: null, 3: null, 4: null };
+
+        function selectChoice(rowNum, choiceVal) {
+            playSound('click');
+            userChoices[rowNum] = choiceVal;
+            const row = document.getElementById(`row-${rowNum}`);
+            const buttons = row.querySelectorAll('.choice-btn');
+            buttons.forEach(btn => {
+                if (btn.innerText === choiceVal) btn.classList.add('selected');
+                else btn.classList.remove('selected');
+            });
+
+            if (userChoices[1] && userChoices[2] && userChoices[3] && userChoices[4]) {
+                playSound('sparkle');
+                const resultBox = document.getElementById('choices-result');
+                const resultText = document.getElementById('choices-result-text');
+                resultBox.style.display = 'block';
+                resultText.innerHTML = `Whether it's <strong>${userChoices[1]}</strong>, in <strong>${userChoices[2]}</strong>, during <strong>${userChoices[3]}</strong>, or a <strong>${userChoices[4]}</strong>... as long as it's with you, every single choice is perfect. ❤️✨`;
+                createHeartsCluster(15);
+            }
+        }
+
+        /* Feature 7: Quiz Data (Total 8 Questions: 4 Funny + 4 Romantic) */
         const quizData = [
+            /* 4 Funny Questions */
             {
                 q: "Chota Don ka sabse dangerous weapon kya hai? 😤",
                 options: ["Gusse wali look 😳", "Flying Chappal 🩴😂", "Ignore karna 🥺", "Aankhein dikhana 👁️"],
@@ -1232,10 +1387,23 @@ Happy Birthday Home💖`;
             },
             {
                 q: "Flying chappal se bachne ka best tareeka kya hai? 😂",
-                options: ["Bhaag jao 🏃", "Sorry bolke pookie ban jao 👉🏻👈][", "Kandhe par sarr rakh do 🥹", "Chappal catch kar lo 🧤"],
+                options: ["Bhaag jao 🏃", "Sorry bolke pookie ban jao 👉🏻👈🏻", "Kandhe par sarr rakh do 🥹", "Chappal catch kar lo 🧤"],
                 correct: 1,
                 reactions: ["Bingo! Pookie bante hi chappal hawa mein ruk jati hai! 🥹❤️", "Galat! Sirf Pookie banne se hi jaan bachti hai! 😂"]
             },
+            {
+                q: "Agar Chota Don gussa ho jaye to hero ko kya karna chahiye? 😂",
+                options: ["Insta DP change kar lo 😅", "Jee bhar ke thappad/chappal kha lo 😭", "Novel padh ke sunao 📖", "All of the above ❤️"],
+                correct: 3,
+                reactions: ["Sahi javab! Sab qubool hai Chota Don ke samne! 😭❤️", "Yeh sabhi options apply hote hain bhaiya! 😂"]
+            },
+            {
+                q: "Meri sabse badi weakness kya hai? 🙈",
+                options: ["Chat GPT 😂", "Chota Don ki masoomiyat 🥺❤️", "Mountains 🏔️", "Button wale shirts 👔"],
+                correct: 1,
+                reactions: ["Bilkul sahi! Tumhari masoomiyat ke aage sab fail hai! 🥺💖", "Nahi ji, meri sabse badi weakness tum hi ho! ❤️"]
+            },
+            /* 4 Romantic Questions */
             {
                 q: "Mera premium access kis ke paas hai? 😭❤️",
                 options: ["Kisi ke paas nahi", "ChatGPT ke paas 🤖", "Sirf Chota Don ke paas 👑", "Duniyawaloon ke paas"],
@@ -1243,10 +1411,22 @@ Happy Birthday Home💖`;
                 reactions: ["Exactly! Sirf aur sirf Chota Don ke paas lifetime access hai! 👑💖", "Areyyy... Sirf Chota Don hi ki malkin hai! 🫀"]
             },
             {
-                q: "Agar Chota Don gussa ho jaye to hero ko kya karna chahiye? 😂",
-                options: ["Insta DP change kar lo 😅", "Jee bhar ke thappad/chappal kha lo 😭", "Novel padh ke sunao 📖", "All of the above ❤️"],
+                q: "Mere liye sabse safe place kaunsi hai? 🏡",
+                options: ["Pahad 🏔️", "Tumhari bahein / Tumhara dil 🫀", "Ghar 🛋️", "Kahin bhi jahan book ho 📖"],
+                correct: 1,
+                reactions: ["Tum hi mera home aur safe place ho. Always. 🫀❤️", "Nope! Tumhara dil hi mera असली home hai! 🌸"]
+            },
+            {
+                q: "Hamari dream location kaunsi hai? 🌙",
+                options: ["Crowded Mall 🛍️", "Mountains mein chota sa ghar 🏔️🏠", "Busy City Road 🏙️", "Amusement Park 🎡"],
+                correct: 1,
+                reactions: ["Yes! Quiet house in mountains, novel reading & you. 🌙✨", "Pahadon wala dream ghar bhool gayi kya? 🥺"]
+            },
+            {
+                q: "Mere dil mein tumhari postion kya hai? 👑",
+                options: ["Pasandida Aurat 🫀", "Chota Don 👑", "Mera Home 🏡", "Sab kuch hi ho tum ❤️"],
                 correct: 3,
-                reactions: ["Sahi javab! Sab qubool hai Chota Don ke samne! 😭❤️", "Yeh sabhi options apply hote hain bhaiya! 😂"]
+                reactions: ["Sach mein, tum hi mera sab kuch ho. ❤️✨", "Sabhi options sahi hain! Tum sab kuch ho mera! 🫀"]
             }
         ];
 
@@ -1259,7 +1439,7 @@ Happy Birthday Home💖`;
 
         function loadQuizQuestion() {
             const q = quizData[currentQuizIndex];
-            document.getElementById('quiz-question').innerText = q.q;
+            document.getElementById('quiz-question').innerText = `(${currentQuizIndex + 1}/8) ${q.q}`;
             document.getElementById('quiz-feedback').innerText = "";
             const optionsContainer = document.getElementById('quiz-options');
             optionsContainer.innerHTML = '';
@@ -1304,11 +1484,11 @@ Happy Birthday Home💖`;
                 document.getElementById('quiz-container').innerHTML = `<p class="title-script" style="font-size:1.8rem; color:var(--accent-pink);">Quiz Complete! You win my whole heart. 😂💖</p>`;
                 document.getElementById('quiz-feedback').innerText = "";
                 document.getElementById('quiz-next-btn').style.display = 'none';
-                setTimeout(() => goToScene(11), 1800);
+                setTimeout(() => goToScene(13), 1800);
             }
         }
 
-        /* Scene 11: Romantic Heart Catching Game */
+        /* Scene 13: Romantic Heart Catching Game */
         let heartScore = 0;
         let heartTimer = 15;
         let heartInterval = null;
@@ -1391,19 +1571,57 @@ Happy Birthday Home💖`;
             h.addEventListener('pointerdown', catchHandler);
         }
 
-        /* Scene 13: Promise Reveal */
-        function revealPromise() {
+        /* Feature 2: Our Future (3 Interactive Stars) */
+        const starScenes = {
+            home: "A cozy little house filled with warmth, laughter, and endless cups of tea together. 🏡✨",
+            trip: "Waking up to chilly mountain air, holding hands, and watching the sunrise over snowy peaks. 🏔️🌅",
+            memory: "Filling frame after frame with goofy photos, quiet hugs, and memories we'll treasure forever. 📸💖"
+        };
+
+        function revealStar(type) {
             playSound('sparkle');
-            document.getElementById('promise-btn').style.display = 'none';
+            document.getElementById('star-text').innerText = starScenes[type];
+            createHeartsCluster(10);
+        }
+
+        /* Feature 5: Future Photo Booth Interaction */
+        function triggerFrameMagic() {
+            playSound('sparkle');
+            createHeartsCluster(20);
+        }
+
+        /* Feature 3: Secret Locked Envelope & Scene 17 Promise */
+        function revealSecretPromise() {
+            playSound('sparkle');
+            document.getElementById('locked-envelope').style.display = 'none';
             document.getElementById('promise-hidden').style.display = 'block';
             document.getElementById('promise-next-btn').style.display = 'inline-block';
             createHeartsCluster(25);
         }
 
-        /* Scene 16: Final Outro Celebration */
-        function triggerFinalCelebration() {
+        /* Feature 6: Voice Note Player / Placeholder */
+        function playVoiceNote() {
+            playSound('click');
+            const audio = document.getElementById('voice-audio');
+            const status = document.getElementById('voice-status');
+
+            if (audio && audio.getAttribute('src') && audio.getAttribute('src') !== '') {
+                audio.play().then(() => {
+                    status.innerText = "Playing voice note... 🎙️❤️";
+                }).catch(() => {
+                    status.innerText = "Voice note placeholder ready! (Add your audio file path to voicenote.mp3) 🎙️❤️";
+                });
+            } else {
+                status.innerText = "Voice note placeholder ready! (Add your audio file path to voicenote.mp3) 🎙️❤️";
+            }
+        }
+
+        /* Scene 21: Special Ending Fade-out Animation */
+        function startCinematicFadeOut() {
             playSound('sparkle');
-            createHeartsCluster(40);
+            createHeartsCluster(30);
+            const overlay = document.getElementById('fade-overlay');
+            overlay.classList.add('active');
         }
 
         /* Dynamic Visual Background Particle & Heart System */
@@ -1473,15 +1691,10 @@ Happy Birthday Home💖`;
 
         window.addEventListener('resize', resizeCanvas);
 
-        /* Global Tap Event Listener for Audio Context & Autoplay Unlock */
         document.addEventListener('click', () => {
             getAudioContext();
-            if (!audioInitialized) {
-                attemptPlayAudio();
-            }
         }, { once: false });
 
-        // Initialize Application State on Page Load
         window.addEventListener('DOMContentLoaded', () => {
             resizeCanvas();
             animateStars();

@@ -1,219 +1,1428 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Birthday Chota Don 💖</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday Chota Don 💖</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #05040a;
+            --accent-pink: #ff4d8d;
+            --accent-glow: #ff75a0;
+            --accent-purple: #9d4edd;
+            --glass-bg: rgba(18, 14, 34, 0.72);
+            --glass-border: rgba(255, 255, 255, 0.14);
+            --text-main: #f8f9fa;
+            --text-sub: #d0c7e2;
+            --gold-glow: #ffd700;
+        }
 
-<style>
-*{box-sizing:border-box}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-body{
-margin:0;
-min-height:100vh;
-font-family:Georgia,serif;
-color:white;
-text-align:center;
-background:
-radial-gradient(circle at 20% 20%,#ff72c855,transparent 30%),
-radial-gradient(circle at 80% 30%,#8b7cff55,transparent 30%),
-linear-gradient(145deg,#080611,#211027,#090715);
-overflow:hidden;
-}
+        html, body {
+            width: 100%;
+            min-height: 100%;
+            overflow-x: hidden;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
 
-.page{
-min-height:100vh;
-display:none;
-align-items:center;
-justify-content:center;
-padding:20px;
-animation:fade 1s ease;
-}
+        body {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.page.active{
-display:flex;
-}
+        /* Ambient Stars & Canvas */
+        #star-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
 
-.card{
-width:min(650px,100%);
-padding:35px 22px;
-border-radius:30px;
-background:#ffffff12;
-border:1px solid #ffffff25;
-backdrop-filter:blur(15px);
-box-shadow:0 25px 80px #0008;
-}
+        #particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
 
-h1{
-font-size:clamp(2.3rem,9vw,4rem);
-text-shadow:0 0 15px #ff75c8,0 0 35px #9c8cff;
-}
+        /* Fixed Audio Control UI */
+        .audio-control-btn {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            z-index: 9999;
+            background: rgba(18, 14, 34, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 8px 14px;
+            border-radius: 30px;
+            color: var(--text-main);
+            font-size: 0.82rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            max-width: 80vw;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-p{
-font-size:1.08rem;
-line-height:1.8;
-}
+        .audio-control-btn:active {
+            transform: scale(0.95);
+        }
 
-.hero{
-font-size:90px;
-animation:float 2s ease-in-out infinite;
-}
+        .pulse-icon {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background-color: var(--accent-pink);
+            box-shadow: 0 0 10px var(--accent-pink);
+            flex-shrink: 0;
+            animation: pulse-dot 1.5s infinite alternate;
+        }
 
-button{
-border:0;
-border-radius:50px;
-padding:14px 25px;
-margin:10px;
-font-size:1rem;
-font-weight:bold;
-cursor:pointer;
-background:linear-gradient(135deg,#fff,#ffd9ed);
-color:#71355f;
-box-shadow:0 10px 30px #0007;
-}
+        .pulse-icon.paused {
+            background-color: #777;
+            box-shadow: none;
+            animation: none;
+        }
 
-button:active{
-transform:scale(.93);
-}
+        .pulse-icon.error {
+            background-color: #ff4d4d;
+            box-shadow: 0 0 10px #ff4d4d;
+            animation: none;
+        }
 
-.pin{
-width:210px;
-padding:15px;
-border:0;
-border-radius:15px;
-font-size:25px;
-text-align:center;
-letter-spacing:8px;
-outline:none;
-}
+        @keyframes pulse-dot {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            100% { transform: scale(1.3); opacity: 1; }
+        }
 
-.hint{
-margin:20px auto;
-max-width:500px;
-padding:18px;
-border-radius:20px;
-background:#ffffff0d;
-line-height:1.8;
-}
+        /* Scene Container Frame */
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 75px 16px 25px 16px;
+        }
 
-@keyframes fade{
-from{opacity:0;transform:scale(1.04)}
-to{opacity:1;transform:scale(1)}
-}
+        .scene {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(18px) scale(0.98);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-@keyframes float{
-50%{transform:translateY(-12px)}
-}
-</style>
+        .scene.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 26px 20px;
+            width: 100%;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.04);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        /* Typography */
+        .title-cinematic {
+            font-family: 'Cinzel', Georgia, serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #ffb6c1 50%, #ff4d8d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            line-height: 1.35;
+            letter-spacing: 0.5px;
+        }
+
+        .title-script {
+            font-family: 'Dancing Script', cursive, sans-serif;
+            font-size: 2.2rem;
+            color: var(--accent-pink);
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(255, 77, 141, 0.4);
+        }
+
+        .subtitle {
+            font-size: 0.92rem;
+            color: var(--text-sub);
+            line-height: 1.6;
+            margin-bottom: 22px;
+            font-weight: 300;
+        }
+
+        .highlight-text {
+            color: var(--accent-glow);
+            font-weight: 500;
+        }
+
+        /* Buttons */
+        .btn-cinematic {
+            background: linear-gradient(135deg, rgba(255, 77, 141, 0.85) 0%, rgba(157, 78, 221, 0.85) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 14px 28px;
+            border-radius: 30px;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255, 77, 141, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+            outline: none;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-cinematic:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 10px rgba(255, 77, 141, 0.3);
+        }
+
+        /* PIN Lock Custom Interface */
+        .pin-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .pin-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-pink);
+            transition: all 0.3s ease;
+        }
+
+        .pin-dot.filled {
+            background-color: var(--accent-pink);
+            box-shadow: 0 0 12px var(--accent-pink);
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 260px;
+            margin: 0 auto 15px auto;
+        }
+
+        .key-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3rem;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .key-btn:active {
+            background: rgba(255, 77, 141, 0.3);
+            transform: scale(0.92);
+        }
+
+        /* Emotional Message Container */
+        .message-box {
+            text-align: left;
+            font-size: 0.93rem;
+            line-height: 1.8;
+            color: #e2d9f3;
+            max-height: 380px;
+            overflow-y: auto;
+            padding: 10px 12px 10px 4px;
+            white-space: pre-line;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .message-box::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .message-box::-webkit-scrollbar-thumb {
+            background: var(--accent-pink);
+            border-radius: 4px;
+        }
+
+        /* Reasons Grid */
+        .reasons-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .reason-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-align: left;
+            transition: transform 0.2s ease;
+        }
+
+        .reason-icon {
+            font-size: 1.6rem;
+            flex-shrink: 0;
+        }
+
+        /* Interactive Elements / Cake Canvas */
+        .interactive-area {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        /* Cake Styling */
+        .cake {
+            position: relative;
+            width: 150px;
+            height: 100px;
+            background: linear-gradient(to bottom, #ffb6c1, #ff75a0);
+            border-radius: 14px 14px 0 0;
+            box-shadow: inset 0 -10px 0 rgba(0,0,0,0.15), 0 8px 25px rgba(0,0,0,0.5);
+        }
+        .cake::before {
+            content: '';
+            position: absolute;
+            top: -28px;
+            left: 15px;
+            width: 120px;
+            height: 30px;
+            background: #fff;
+            border-radius: 14px 14px 0 0;
+            box-shadow: inset 0 -5px 0 #f0e68c;
+        }
+        .candle {
+            position: absolute;
+            top: -53px;
+            left: 67px;
+            width: 16px;
+            height: 26px;
+            background: repeating-linear-gradient(45deg, #fff, #fff 5px, #ff4d8d 5px, #ff4d8d 10px);
+            border-radius: 3px;
+        }
+        .flame {
+            position: absolute;
+            top: -16px;
+            left: 3px;
+            width: 10px;
+            height: 16px;
+            background: #ffaa00;
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 10px #ffaa00, 0 0 20px #ff4d8d;
+            animation: flicker 0.6s infinite alternate;
+        }
+        .flame.off {
+            display: none;
+        }
+        @keyframes flicker {
+            0% { transform: scale(1); opacity: 0.9; }
+            100% { transform: scale(1.18); opacity: 1; }
+        }
+
+        /* Mini-Games Floating Area */
+        .game-canvas {
+            width: 100%;
+            height: 260px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            border: 1px dashed var(--glass-border);
+            margin-bottom: 15px;
+            touch-action: none;
+        }
+
+        .floating-item {
+            position: absolute;
+            cursor: pointer;
+            font-size: 2.2rem;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s;
+            user-select: none;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        /* Quiz Styling */
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            padding: 14px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+            font-size: 0.92rem;
+        }
+        .quiz-option:active {
+            background: rgba(255, 77, 141, 0.2);
+        }
+        .quiz-option.correct {
+            background: rgba(46, 204, 113, 0.3) !important;
+            border-color: #2ecc71 !important;
+            color: #fff;
+        }
+        .quiz-option.wrong {
+            background: rgba(231, 76, 60, 0.3) !important;
+            border-color: #e74c3c !important;
+            color: #fff;
+        }
+
+        /* Picture Frame Placeholder */
+        .photo-frame {
+            width: 210px;
+            height: 250px;
+            border: 2px dashed var(--accent-pink);
+            border-radius: 18px;
+            margin: 0 auto 15px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 77, 141, 0.05);
+            box-shadow: 0 0 25px rgba(255, 77, 141, 0.15);
+        }
+
+        /* Mountain Silhouette Graphic */
+        .mountain-graphic {
+            width: 100%;
+            height: 190px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            background: linear-gradient(to bottom, #090e17, #162235);
+            margin-bottom: 15px;
+            border: 1px solid var(--glass-border);
+        }
+        .moon {
+            position: absolute;
+            top: 25px;
+            right: 40px;
+            width: 45px;
+            height: 45px;
+            background: #fffdf0;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #fffdf0, 0 0 40px rgba(255, 253, 240, 0.4);
+        }
+        .mountain-svg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 110px;
+            fill: #090c10;
+        }
+        .cabin {
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 26px;
+            height: 20px;
+            background: #4a2e18;
+            border-radius: 2px;
+            z-index: 2;
+        }
+        .cabin-roof {
+            position: absolute;
+            top: -11px;
+            left: -5px;
+            width: 0;
+            height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-bottom: 13px solid #2b1810;
+        }
+        .cabin-window {
+            width: 7px;
+            height: 7px;
+            background: #ffd700;
+            margin: 6px auto 0 auto;
+            box-shadow: 0 0 8px #ffd700;
+        }
+
+        /* Error Text */
+        .error-msg {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            min-height: 22px;
+            margin-top: 5px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+    </style>
 </head>
-
 <body>
 
-<section id="page1" class="page active">
-<div class="card">
+    <!-- Stars Background Canvas -->
+    <canvas id="star-canvas"></canvas>
+    <div id="particle-container"></div>
 
-<div class="hero">🎬</div>
+    <!-- Audio Element -->
+    <audio id="bg-music" src="song.mp3" loop preload="auto"></audio>
 
-<h1>Happy Birthday<br>Chota Don 💖</h1>
+    <!-- Global Music Controls -->
+    <button class="audio-control-btn" id="music-toggle" onclick="toggleAudioExplicit()">
+        <span class="pulse-icon paused" id="music-pulse"></span>
+        <span id="music-text">Music OFF</span>
+    </button>
 
-<p>
-Tonight isn't just a birthday wish...<br>
-It's a little movie made for you. ❤️
-</p>
+    <div class="app-container">
 
-<button onclick="showPage(2)">
-ENTER THE MOVIE 🎬
-</button>
+        <!-- SCENE 1: MOVIE OPENING -->
+        <div class="scene active" id="scene-1">
+            <div class="glass-card">
+                <div class="title-script">Tonight's Premiere</div>
+                <h1 class="title-cinematic">Happy Birthday<br>Chota Don 💖</h1>
+                <p class="subtitle">
+                    Tonight isn't just a birthday wish...<br>
+                    It's a little movie made only for you. ❤️
+                </p>
+                <button class="btn-cinematic" onclick="goToScene(2)">ENTER THE MOVIE 🎬</button>
+            </div>
+        </div>
 
-</div>
-</section>
+        <!-- SCENE 2: SECRET PIN -->
+        <div class="scene" id="scene-2">
+            <div class="glass-card">
+                <h2 class="title-cinematic">Only You Know The Key</h2>
+                <p class="subtitle" style="margin-bottom: 12px;">
+                    "The date and month when you became mine,<br>and I became yours. 🫀"
+                </p>
+                <p style="font-size: 0.8rem; letter-spacing: 2px; color: var(--accent-pink); margin-bottom: 15px;">FORMAT: DDMM</p>
+                
+                <div class="pin-display">
+                    <div class="pin-dot" id="dot-0"></div>
+                    <div class="pin-dot" id="dot-1"></div>
+                    <div class="pin-dot" id="dot-2"></div>
+                    <div class="pin-dot" id="dot-3"></div>
+                </div>
 
+                <div class="keypad">
+                    <button class="key-btn" onclick="pressPin('1')">1</button>
+                    <button class="key-btn" onclick="pressPin('2')">2</button>
+                    <button class="key-btn" onclick="pressPin('3')">3</button>
+                    <button class="key-btn" onclick="pressPin('4')">4</button>
+                    <button class="key-btn" onclick="pressPin('5')">5</button>
+                    <button class="key-btn" onclick="pressPin('6')">6</button>
+                    <button class="key-btn" onclick="pressPin('7')">7</button>
+                    <button class="key-btn" onclick="pressPin('8')">8</button>
+                    <button class="key-btn" onclick="pressPin('9')">9</button>
+                    <button class="key-btn" onclick="clearPin()">C</button>
+                    <button class="key-btn" onclick="pressPin('0')">0</button>
+                    <button class="key-btn" onclick="checkPin()">✓</button>
+                </div>
+                <div class="error-msg" id="pin-error"></div>
+            </div>
+        </div>
 
-<section id="page2" class="page">
-<div class="card">
+        <!-- SCENE 3: WELCOME -->
+        <div class="scene" id="scene-3">
+            <div class="glass-card">
+                <div class="title-script">Access Granted</div>
+                <h2 class="title-cinematic">You're In! ❤️</h2>
+                <p class="subtitle">
+                    Welcome to your little birthday movie, Chota Don. 💖
+                </p>
+                <button class="btn-cinematic" onclick="goToScene(4)">START THE STORY 🌙</button>
+            </div>
+        </div>
 
-<div class="hero">🔐</div>
+        <!-- SCENE 4: BIRTHDAY INTRO -->
+        <div class="scene" id="scene-4">
+            <div class="glass-card">
+                <div style="font-size: 3rem; margin-bottom: 10px;">✨🎬✨</div>
+                <h2 class="title-cinematic">Happy Birthday Chota Don 💖</h2>
+                <p class="subtitle">
+                    Every movie has a scene that changes everything. For me, it was the moment you entered my life.
+                </p>
+                <button class="btn-cinematic" onclick="goToScene(5)">OPEN MY MESSAGE 💌</button>
+            </div>
+        </div>
 
-<h1>Only You Know The Key</h1>
+        <!-- SCENE 5: MY BIRTHDAY MESSAGE -->
+        <div class="scene" id="scene-5">
+            <div class="glass-card">
+                <h3 class="title-cinematic" style="font-size: 1.4rem;">From My Heart</h3>
+                <div class="message-box" id="typewriter-text">
+Happy Birthday Chota Don💖🫀
 
-<p>There is a little secret waiting for you... 👀❤️</p>
+Ji, ab Mujhe nahin pata kin kiya bolna hota hain or main chahta to ChatGPT se ya kisi or AI se kuch write karken aapko bol skta tha par nahin kiya jii.
 
-<div class="hint">
-<b>A little hint...</b><br><br>
-The date and month when you became mine,<br>
-and I became yours. 🫀<br><br>
-<b>DDMM</b>
-</div>
+Happy Birthday baccha💗🫀
 
-<input
-id="pin"
-class="pin"
-type="password"
-inputmode="numeric"
-maxlength="4"
-placeholder="••••">
+Or main aapko bohot Miss karta hun bohot🤧
 
-<br>
+kabhi kabhi sochta hun kaash is duniya main sirf ham dono hoten. Sirf aap or main. Aur kahin door pahadon par ghar hota hamara.
 
-<button onclick="unlock()">
-UNLOCK ❤️
-</button>
+Maine pahadon ke kinare novel padh rha hota or aap mere kandhen pr apna sarr rakh-kar voh sunn rahin thi🤧
 
-<p id="error"></p>
+mujhse kehna to bohot kuch hain par sayad main saari umar kehta rahunga par meri baatein khatam nahin hongi.
 
-</div>
-</section>
+I miss you so much jii🫀💗
 
+Love youhhhhhhh💖🫀
 
-<script>
+Happy Birthday Home💖
+                </div>
+                <button class="btn-cinematic" style="margin-top: 15px;" onclick="goToScene(6)">CONTINUE 💖</button>
+            </div>
+        </div>
 
-function showPage(number){
+        <!-- SCENE 6: ROMANTIC REASONS -->
+        <div class="scene" id="scene-6">
+            <div class="glass-card">
+                <h2 class="title-cinematic">Why You Are Special</h2>
+                <div class="reasons-grid">
+                    <div class="reason-card">
+                        <span class="reason-icon">😊</span>
+                        <div><strong>Your Smile</strong><br><span style="font-size:0.8rem; color:var(--text-sub);">It instantly brightens up my darkest days.</span></div>
+                    </div>
+                    <div class="reason-card">
+                        <span class="reason-icon">🫀</span>
+                        <div><strong>Your Pure Heart</strong><br><span style="font-size:0.8rem; color:var(--text-sub);">The gentle way you care and love.</span></div>
+                    </div>
+                    <div class="reason-card">
+                        <span class="reason-icon">✨</span>
+                        <div><strong>Your Presence</strong><br><span style="font-size:0.8rem; color:var(--text-sub);">Just knowing you are here brings peace.</span></div>
+                    </div>
+                    <div class="reason-card">
+                        <span class="reason-icon">🌸</span>
+                        <div><strong>Your Innocence</strong><br><span style="font-size:0.8rem; color:var(--text-sub);">The subtle, adorable things you do effortlessly.</span></div>
+                    </div>
+                </div>
+                <button class="btn-cinematic" onclick="goToScene(7)">NEXT SCENE 🎬</button>
+            </div>
+        </div>
 
-document.querySelectorAll(".page")
-.forEach(page=>{
-page.classList.remove("active");
-});
+        <!-- SCENE 7: CAKE CUTTING -->
+        <div class="scene" id="scene-7">
+            <div class="glass-card">
+                <h2 class="title-cinematic">Make A Wish</h2>
+                <div class="interactive-area">
+                    <div class="cake">
+                        <div class="candle">
+                            <div class="flame" id="cake-flame"></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="subtitle" id="cake-status">Tap below to blow out the candle!</p>
+                <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                    <button class="btn-cinematic" id="blow-btn" onclick="blowCandle()">BLOW CANDLE 🌬️</button>
+                    <button class="btn-cinematic" id="cut-btn" style="display:none;" onclick="cutCake()">CUT CAKE 🎂</button>
+                </div>
+            </div>
+        </div>
 
-document.getElementById("page"+number)
-.classList.add("active");
+        <!-- SCENE 8: BALLOON POPPING GAME -->
+        <div class="scene" id="scene-8">
+            <div class="glass-card">
+                <h2 class="title-cinematic">Pop The Balloons!</h2>
+                <div class="game-stats">
+                    <span>Time: <strong id="balloon-timer">15</strong>s</span>
+                    <span>Score: <strong id="balloon-score">0</strong></span>
+                </div>
+                <div class="game-canvas" id="balloon-canvas"></div>
+                <button class="btn-cinematic" id="balloon-start-btn" onclick="startBalloonGame()">START GAME 🎈</button>
+                <button class="btn-cinematic" id="balloon-next-btn" style="display:none;" onclick="goToScene(9)">NEXT 🎬</button>
+            </div>
+        </div>
 
-}
+        <!-- SCENE 9: CUTE QUIZ -->
+        <div class="scene" id="scene-9">
+            <div class="glass-card">
+                <h2 class="title-cinematic">A Little Quiz</h2>
+                <div id="quiz-container">
+                    <p class="subtitle" id="quiz-question" style="font-weight:600; color:#fff; margin-bottom:15px;"></p>
+                    <div id="quiz-options"></div>
+                </div>
+                <button class="btn-cinematic" id="quiz-next-btn" style="display:none; margin-top:10px;" onclick="nextQuestion()">NEXT QUESTION ➡️</button>
+            </div>
+        </div>
 
+        <!-- SCENE 10: MAGIC MEMORY JAR -->
+        <div class="scene" id="scene-10">
+            <div class="glass-card">
+                <h2 class="title-cinematic">Magic Memory Jar</h2>
+                <p class="subtitle">Tap the jar to draw out a sweet thought 🪄</p>
+                <div style="font-size: 5rem; cursor: pointer; margin: 15px 0; transition: transform 0.2s;" id="jar-element" onclick="drawMemory()">🫙</div>
+                <p class="subtitle" id="jar-message" style="min-height: 50px; font-style: italic; color: var(--accent-glow);">
+                    "Tap the jar..."
+                </p>
+                <button class="btn-cinematic" onclick="goToScene(11)">CONTINUE 🌙</button>
+            </div>
+        </div>
 
-function unlock(){
+        <!-- SCENE 11: OPEN WHEN -->
+        <div class="scene" id="scene-11">
+            <div class="glass-card">
+                <h2 class="title-cinematic">Open When...</h2>
+                <p class="subtitle">For whenever you need a little warm hug</p>
+                <div style="display:flex; flex-direction:column; gap:10px; width:100%; margin-bottom:15px;">
+                    <button class="btn-cinematic" style="background: rgba(255,255,255,0.08);" onclick="showOpenWhen('sad')">Open when you're sad 🥺</button>
+                    <button class="btn-cinematic" style="background: rgba(255,255,255,0.08);" onclick="showOpenWhen('miss')">Open when you miss me 💭</button>
+                    <button class="btn-cinematic" style="background: rgba(255,255,255,0.08);" onclick="showOpenWhen('smile')">Open when you need a smile 😊</button>
+                </div>
+                <div class="glass-card" id="open-when-card" style="display:none; background:rgba(0,0,0,0.3); padding:15px; margin-bottom:15px;">
+                    <p id="open-when-text" style="font-size:0.9rem; line-height:1.5; color:#fff;"></p>
+                </div>
+                <button class="btn-cinematic" onclick="goToScene(12)">NEXT SCENE 🎬</button>
+            </div>
+        </div>
 
-let pin=document.getElementById("pin").value;
+        <!-- SCENE 12: HEART CATCHING GAME -->
+        <div class="scene" id="scene-12">
+            <div class="glass-card">
+                <h2 class="title-cinematic">Catch My Heart</h2>
+                <div class="game-stats">
+                    <span>Time: <strong id="heart-timer">15</strong>s</span>
+                    <span>Hearts: <strong id="heart-score">0</strong></span>
+                </div>
+                <div class="game-canvas" id="heart-canvas"></div>
+                <button class="btn-cinematic" id="heart-start-btn" onclick="startHeartGame()">START CATCHING 💖</button>
+                <button class="btn-cinematic" id="heart-next-btn" style="display:none;" onclick="goToScene(13)">NEXT 🎬</button>
+            </div>
+        </div>
 
-if(pin==="2509"){
+        <!-- SCENE 13: FUTURE MEMORY -->
+        <div class="scene" id="scene-13">
+            <div class="glass-card">
+                <h2 class="title-cinematic">A Reserved Frame</h2>
+                <div class="photo-frame">
+                    <span style="font-size: 2.5rem; margin-bottom: 10px;">🖼️</span>
+                    <strong style="font-size:0.9rem; color:var(--accent-pink);">One Picture Is Missing...</strong>
+                </div>
+                <p class="subtitle">
+                    "Not because there isn't a story...<br>
+                    but because some memories haven't happened yet.<br><br>
+                    <span class="highlight-text">Reserved for a memory we haven't made yet. ❤️</span>"
+                </p>
+                <button class="btn-cinematic" onclick="goToScene(14)">OUR DREAM 🏔️</button>
+            </div>
+        </div>
 
-showPage(3);
+        <!-- SCENE 14: MOUNTAIN DREAM -->
+        <div class="scene" id="scene-14">
+            <div class="glass-card">
+                <h2 class="title-cinematic">Our Mountain Dream</h2>
+                <div class="mountain-graphic">
+                    <div class="moon"></div>
+                    <div class="cabin">
+                        <div class="cabin-roof"></div>
+                        <div class="cabin-window"></div>
+                    </div>
+                    <svg class="mountain-svg" viewBox="0 0 500 150" preserveAspectRatio="none">
+                        <path d="M0,150 L0,90 L120,20 L220,100 L320,40 L420,110 L500,70 L500,150 Z"></path>
+                    </svg>
+                </div>
+                <p class="subtitle" style="text-align: left; font-style: italic; font-size: 0.88rem;">
+                    "Sometimes I imagine a little house somewhere in the mountains...<br><br>
+                    A quiet place away from everything.<br><br>
+                    A book in my hands,<br>
+                    you sitting beside me,<br>
+                    your head resting on my shoulder...<br><br>
+                    Nothing extraordinary.<br><br>
+                    Just you.<br>
+                    Just me.<br><br>
+                    And a little home somewhere far away from the noise of the world. 🌙🫀"
+                </p>
+                <button class="btn-cinematic" onclick="goToScene(15)">MY PROMISE 💍</button>
+            </div>
+        </div>
 
-}else{
+        <!-- SCENE 15: PROMISE -->
+        <div class="scene" id="scene-15">
+            <div class="glass-card">
+                <h2 class="title-cinematic">A Forever Promise</h2>
+                <div id="promise-hidden" style="display:none; margin: 20px 0;">
+                    <h3 class="title-script" style="font-size: 2.5rem; color: #fff;">In Sha Allah... 💍❤️</h3>
+                    <p class="subtitle" style="font-size: 1.1rem; color: var(--accent-pink); font-weight: 600;">
+                        "One day, I'll make you my wife. 🫀"
+                    </p>
+                    <p class="subtitle" style="font-size: 0.9rem;">
+                        Not as a joke.<br>
+                        Not as a random promise.<br>
+                        But with all the love in my heart.
+                    </p>
+                </div>
+                <button class="btn-cinematic" id="promise-btn" onclick="revealPromise()">OPEN THE PROMISE ❤️</button>
+                <button class="btn-cinematic" id="promise-next-btn" style="display:none;" onclick="goToScene(16)">FINAL SCENE 🎬</button>
+            </div>
+        </div>
 
-document.getElementById("error").textContent=
-"Think about that special day again... ❤️";
+        <!-- SCENE 16: FINAL SCENE -->
+        <div class="scene" id="scene-16">
+            <div class="glass-card">
+                <div style="font-size: 3.5rem; animation: pulse 1.5s infinite alternate; margin-bottom: 10px;" id="final-heart">💖</div>
+                <h1 class="title-cinematic" style="font-size: 2.2rem;">Happy Birthday,<br>Home. 💖</h1>
+                
+                <p class="subtitle" style="font-style: italic; margin-bottom: 15px;">
+                    "Because home isn't always a place...<br>sometimes, it's a person."
+                </p>
 
-}
+                <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: left; font-size: 0.9rem; line-height: 1.8;">
+                    My Favourite Woman. 👑<br>
+                    My safe place. 🫀<br>
+                    My favourite person. ❤️<br>
+                    My favourite feeling. 🌙<br>
+                    My Home. 🏡
+                </div>
 
-}
+                <p class="title-script" style="font-size: 1.8rem; margin-bottom: 5px;">Happy Birthday, Chota Don. 🎂💖</p>
+                <p class="subtitle" style="font-size: 0.85rem;">May your smile always stay this beautiful. 🌸</p>
+                
+                <button class="btn-cinematic" onclick="triggerFinalCelebration()">REPLAY CELEBRATION 🎉</button>
+            </div>
+        </div>
 
-</script>
-<section id="page3" class="page">
-<div class="card">
+    </div>
 
-<div class="hero">🎂</div>
+    <script>
+        /* Global Web Audio API Context for UI Sound Effects */
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume().catch(() => {});
+            }
+            return audioCtx;
+        }
 
-<h1>You're In! ❤️</h1>
+        function playTone(freq, duration, type = 'sine') {
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch(e){}
+        }
 
-<p>
-Welcome to your little birthday movie, Chota Don. 💖
-</p>
+        function playSound(name) {
+            try {
+                if (name === 'click') playTone(600, 0.05);
+                else if (name === 'correct') { playTone(523.25, 0.1); setTimeout(() => playTone(659.25, 0.2), 100); }
+                else if (name === 'wrong') { playTone(200, 0.2, 'sawtooth'); }
+                else if (name === 'pop') { playTone(800, 0.04, 'triangle'); }
+                else if (name === 'blow') { playTone(300, 0.3, 'sine'); }
+                else if (name === 'sparkle') { playTone(1200, 0.15); }
+            } catch(e){}
+        }
 
-<button onclick="alert('The movie begins... 🎬❤️')">
-START 🎬
-</button>
+        /* Robust Background Music Controller */
+        const bgMusic = document.getElementById('bg-music');
+        const musicPulse = document.getElementById('music-pulse');
+        const musicText = document.getElementById('music-text');
+        const musicBtn = document.getElementById('music-toggle');
+        
+        bgMusic.volume = 0.35; // 35% background volume
+        let audioFileNotFound = false;
+        let isAudioPlaying = false;
 
-</div>
-</section>
+        function updateAudioUI(playing, errorMsg = null) {
+            if (errorMsg) {
+                musicPulse.className = "pulse-icon error";
+                musicText.innerText = errorMsg;
+                return;
+            }
+            if (playing) {
+                isAudioPlaying = true;
+                musicPulse.className = "pulse-icon";
+                musicText.innerText = "Music ON";
+            } else {
+                isAudioPlaying = false;
+                musicPulse.className = "pulse-icon paused";
+                musicText.innerText = "Music OFF";
+            }
+        }
+
+        function attemptPlayAudio() {
+            if (audioFileNotFound || isAudioPlaying) return;
+            getAudioContext();
+            
+            const promise = bgMusic.play();
+            if (promise !== undefined) {
+                promise.then(() => {
+                    updateAudioUI(true);
+                }).catch(err => {
+                    if (err.name === "NotSupportedError" || err.message.includes("404") || err.message.includes("supported")) {
+                        audioFileNotFound = true;
+                        updateAudioUI(false, "Song file not found");
+                    } else {
+                        // Autoplay blocked by browser policy
+                        updateAudioUI(false);
+                    }
+                });
+            }
+        }
+
+        function toggleAudioExplicit() {
+            playSound('click');
+            getAudioContext();
+
+            if (audioFileNotFound) {
+                alert("The song.mp3 file could not be loaded from your repository.");
+                return;
+            }
+
+            if (bgMusic.paused) {
+                const promise = bgMusic.play();
+                if (promise !== undefined) {
+                    promise.then(() => {
+                        updateAudioUI(true);
+                    }).catch(err => {
+                        audioFileNotFound = true;
+                        updateAudioUI(false, "Song file not found");
+                    });
+                }
+            } else {
+                bgMusic.pause();
+                updateAudioUI(false);
+            }
+        }
+
+        /* Navigation Flow */
+        let currentScene = 1;
+        let isTransitioning = false;
+
+        function goToScene(sceneNum) {
+            if (isTransitioning && currentScene === sceneNum) return;
+            isTransitioning = true;
+            
+            playSound('click');
+            attemptPlayAudio();
+
+            // Clear active mini-game timers upon leaving scene
+            if (currentScene === 8) resetBalloonGame();
+            if (currentScene === 12) resetHeartGame();
+
+            const current = document.getElementById(`scene-${currentScene}`);
+            const next = document.getElementById(`scene-${sceneNum}`);
+
+            if (current) {
+                current.classList.remove('active');
+            }
+
+            setTimeout(() => {
+                currentScene = sceneNum;
+                if (next) {
+                    // Reset scene specific states if re-visited
+                    if (sceneNum === 9) resetQuizState();
+                    if (sceneNum === 7) resetCakeState();
+                    next.classList.add('active');
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                isTransitioning = false;
+            }, 400);
+        }
+
+        /* Scene 2: Secret PIN Logic */
+        let enteredPin = "";
+        const correctPin = "2509";
+
+        function updatePinDisplay() {
+            for (let i = 0; i < 4; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                if (i < enteredPin.length) dot.classList.add('filled');
+                else dot.classList.remove('filled');
+            }
+        }
+
+        function pressPin(digit) {
+            playSound('click');
+            attemptPlayAudio();
+            if (enteredPin.length < 4) {
+                enteredPin += digit;
+                updatePinDisplay();
+            }
+        }
+
+        function clearPin() {
+            playSound('click');
+            enteredPin = "";
+            updatePinDisplay();
+            document.getElementById('pin-error').innerText = "";
+        }
+
+        function checkPin() {
+            attemptPlayAudio();
+            if (enteredPin === correctPin) {
+                playSound('correct');
+                createHeartsCluster(20);
+                document.getElementById('pin-error').innerText = "";
+                goToScene(3);
+            } else {
+                playSound('wrong');
+                document.getElementById('pin-error').innerText = "Wrong date, my love! Think of our special day 🫀";
+                enteredPin = "";
+                updatePinDisplay();
+            }
+        }
+
+        /* Scene 7: Cake Actions & Reset */
+        function blowCandle() {
+            playSound('blow');
+            document.getElementById('cake-flame').classList.add('off');
+            document.getElementById('cake-status').innerText = "Make a wish! Now cut the cake 🍰";
+            document.getElementById('blow-btn').style.display = 'none';
+            document.getElementById('cut-btn').style.display = 'inline-block';
+            createHeartsCluster(15);
+        }
+
+        function cutCake() {
+            playSound('sparkle');
+            createHeartsCluster(30);
+            document.getElementById('cake-status').innerText = "Yay! Happy Birthday Chota Don! 🎉";
+            setTimeout(() => goToScene(8), 1500);
+        }
+
+        function resetCakeState() {
+            document.getElementById('cake-flame').classList.remove('off');
+            document.getElementById('cake-status').innerText = "Tap below to blow out the candle!";
+            document.getElementById('blow-btn').style.display = 'inline-block';
+            document.getElementById('cut-btn').style.display = 'none';
+        }
+
+        /* Scene 8: Balloon Mini-Game */
+        let balloonScore = 0;
+        let balloonTimer = 15;
+        let balloonInterval = null;
+        let balloonSpawnInterval = null;
+
+        function resetBalloonGame() {
+            if (balloonInterval) clearInterval(balloonInterval);
+            if (balloonSpawnInterval) clearInterval(balloonSpawnInterval);
+            const canvas = document.getElementById('balloon-canvas');
+            if (canvas) canvas.innerHTML = '';
+            document.getElementById('balloon-start-btn').style.display = 'inline-block';
+            document.getElementById('balloon-next-btn').style.display = 'none';
+            document.getElementById('balloon-score').innerText = '0';
+            document.getElementById('balloon-timer').innerText = '15';
+        }
+
+        function startBalloonGame() {
+            playSound('click');
+            resetBalloonGame();
+            
+            balloonScore = 0;
+            balloonTimer = 15;
+            document.getElementById('balloon-start-btn').style.display = 'none';
+            
+            const canvas = document.getElementById('balloon-canvas');
+
+            balloonSpawnInterval = setInterval(spawnBalloon, 550);
+            balloonInterval = setInterval(() => {
+                balloonTimer--;
+                document.getElementById('balloon-timer').innerText = balloonTimer;
+                if (balloonTimer <= 0) {
+                    clearInterval(balloonInterval);
+                    clearInterval(balloonSpawnInterval);
+                    canvas.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; height:100%; color:#fff; font-weight:600; padding:10px;">Time's up! Total Popped: ${balloonScore} 🎉</div>`;
+                    document.getElementById('balloon-next-btn').style.display = 'inline-block';
+                    playSound('sparkle');
+                    createHeartsCluster(20);
+                }
+            }, 1000);
+        }
+
+        function spawnBalloon() {
+            const canvas = document.getElementById('balloon-canvas');
+            if (!canvas || balloonTimer <= 0) return;
+            const b = document.createElement('div');
+            b.className = 'floating-item';
+            b.innerText = ['🎈', '💖', '🎈', '✨', '🎈'][Math.floor(Math.random()*5)];
+            b.style.left = Math.random() * 80 + 10 + '%';
+            b.style.top = '100%';
+            canvas.appendChild(b);
+
+            let pos = 100;
+            const anim = setInterval(() => {
+                pos -= 1.6;
+                b.style.top = pos + '%';
+                if (pos < -10) {
+                    clearInterval(anim);
+                    if (b.parentNode) b.parentNode.removeChild(b);
+                }
+            }, 30);
+
+            const popHandler = (e) => {
+                e.preventDefault();
+                playSound('pop');
+                balloonScore++;
+                document.getElementById('balloon-score').innerText = balloonScore;
+                clearInterval(anim);
+                if (b.parentNode) b.parentNode.removeChild(b);
+            };
+
+            b.addEventListener('pointerdown', popHandler);
+        }
+
+        /* Scene 9: Quiz Data & Mechanics */
+        const quizData = [
+            {
+                q: "Who is the most beautiful person in my world?",
+                options: ["Chota Don 👑", "Also Chota Don 💖", "Definitely Chota Don 🫀", "All of the above ❤️"],
+                correct: 3
+            },
+            {
+                q: "Where is our dream house situated?",
+                options: ["In a noisy city", "Far away in the mountains 🏔️", "On a beach", "In space"],
+                correct: 1
+            },
+            {
+                q: "How long will my talks with you last?",
+                options: ["A few hours", "A few days", "My entire life 🫀", "Until tomorrow"],
+                correct: 2
+            }
+        ];
+
+        let currentQuizIndex = 0;
+
+        function resetQuizState() {
+            currentQuizIndex = 0;
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `
+                <p class="subtitle" id="quiz-question" style="font-weight:600; color:#fff; margin-bottom:15px;"></p>
+                <div id="quiz-options"></div>
+            `;
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            const q = quizData[currentQuizIndex];
+            document.getElementById('quiz-question').innerText = q.q;
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+            document.getElementById('quiz-next-btn').style.display = 'none';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('div');
+                btn.className = 'quiz-option';
+                btn.innerText = opt;
+                btn.onclick = () => selectQuizOption(idx, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectQuizOption(idx, el) {
+            const q = quizData[currentQuizIndex];
+            const allOptions = document.querySelectorAll('.quiz-option');
+            allOptions.forEach(b => b.onclick = null);
+
+            if (idx === q.correct) {
+                playSound('correct');
+                el.classList.add('correct');
+            } else {
+                playSound('wrong');
+                el.classList.add('wrong');
+                allOptions[q.correct].classList.add('correct');
+            }
+            document.getElementById('quiz-next-btn').style.display = 'inline-block';
+        }
+
+        function nextQuestion() {
+            playSound('click');
+            currentQuizIndex++;
+            if (currentQuizIndex < quizData.length) {
+                loadQuizQuestion();
+            } else {
+                document.getElementById('quiz-container').innerHTML = `<p class="title-script" style="font-size:1.8rem; color:var(--accent-pink);">Quiz Completed! You know my heart completely. ❤️</p>`;
+                document.getElementById('quiz-next-btn').style.display = 'none';
+                setTimeout(() => goToScene(10), 1800);
+            }
+        }
+
+        /* Scene 10: Magic Memory Jar */
+        const jarMessages = [
+            "Some of our best memories haven't happened yet. 🥹❤️",
+            "One day we'll look back at these little moments. ✨",
+            "No photo yet... but the story has already started. 💖",
+            "A future memory is waiting for us. 🌙",
+            "This little website is now one tiny memory. 🫶",
+            "Favourite woman. Always. 👑❤️"
+        ];
+        let jarIdx = 0;
+
+        function drawMemory() {
+            playSound('sparkle');
+            const jarEl = document.getElementById('jar-element');
+            jarEl.style.transform = 'scale(1.2) rotate(10deg)';
+            setTimeout(() => jarEl.style.transform = 'scale(1) rotate(0deg)', 200);
+
+            document.getElementById('jar-message').innerText = `"${jarMessages[jarIdx]}"`;
+            jarIdx = (jarIdx + 1) % jarMessages.length;
+            createHeartsCluster(6);
+        }
+
+        /* Scene 11: Open When Messages */
+        const openWhenData = {
+            sad: "When you are sad, remember that somewhere out there, I am sending you all my love. You are never alone, baccha. 💖",
+            miss: "When you miss me, close your eyes and know that I am missing you even more. You are always in my thoughts. 🤧🫀",
+            smile: "Whenever you need a smile, just remember my promise: a quiet house in the mountains, a book in hand, and you beside me. 🏔️🌸"
+        };
+
+        function showOpenWhen(type) {
+            playSound('click');
+            const card = document.getElementById('open-when-card');
+            const text = document.getElementById('open-when-text');
+            text.innerText = openWhenData[type];
+            card.style.display = 'block';
+        }
+
+        /* Scene 12: Heart Catching Game */
+        let heartScore = 0;
+        let heartTimer = 15;
+        let heartInterval = null;
+        let heartSpawnInterval = null;
+
+        function resetHeartGame() {
+            if (heartInterval) clearInterval(heartInterval);
+            if (heartSpawnInterval) clearInterval(heartSpawnInterval);
+            const canvas = document.getElementById('heart-canvas');
+            if (canvas) canvas.innerHTML = '';
+            document.getElementById('heart-start-btn').style.display = 'inline-block';
+            document.getElementById('heart-next-btn').style.display = 'none';
+            document.getElementById('heart-score').innerText = '0';
+            document.getElementById('heart-timer').innerText = '15';
+        }
+
+        function startHeartGame() {
+            playSound('click');
+            resetHeartGame();
+            
+            heartScore = 0;
+            heartTimer = 15;
+            document.getElementById('heart-start-btn').style.display = 'none';
+            
+            const canvas = document.getElementById('heart-canvas');
+
+            heartSpawnInterval = setInterval(spawnHeart, 650);
+            heartInterval = setInterval(() => {
+                heartTimer--;
+                document.getElementById('heart-timer').innerText = heartTimer;
+                if (heartTimer <= 0) {
+                    clearInterval(heartInterval);
+                    clearInterval(heartSpawnInterval);
+                    canvas.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; height:100%; color:#fff; font-weight:600; padding:10px;">Hearts Caught: ${heartScore} 🫀</div>`;
+                    document.getElementById('heart-next-btn').style.display = 'inline-block';
+                    playSound('sparkle');
+                    createHeartsCluster(20);
+                }
+            }, 1000);
+        }
+
+        function spawnHeart() {
+            const canvas = document.getElementById('heart-canvas');
+            if (!canvas || heartTimer <= 0) return;
+            const h = document.createElement('div');
+            h.className = 'floating-item';
+            h.innerText = '🫀';
+            h.style.left = Math.random() * 80 + 10 + '%';
+            h.style.top = Math.random() * 70 + 15 + '%';
+            canvas.appendChild(h);
+
+            setTimeout(() => {
+                if (h.parentNode) h.parentNode.removeChild(h);
+            }, 1100);
+
+            const catchHandler = (e) => {
+                e.preventDefault();
+                playSound('pop');
+                heartScore++;
+                document.getElementById('heart-score').innerText = heartScore;
+                if (h.parentNode) h.parentNode.removeChild(h);
+            };
+
+            h.addEventListener('pointerdown', catchHandler);
+        }
+
+        /* Scene 15: Promise Reveal */
+        function revealPromise() {
+            playSound('sparkle');
+            document.getElementById('promise-btn').style.display = 'none';
+            document.getElementById('promise-hidden').style.display = 'block';
+            document.getElementById('promise-next-btn').style.display = 'inline-block';
+            createHeartsCluster(25);
+        }
+
+        /* Scene 16: Final Celebration */
+        function triggerFinalCelebration() {
+            playSound('sparkle');
+            createHeartsCluster(35);
+        }
+
+        /* Dynamic Visual Background Particle & Heart System */
+        function createHeartsCluster(count) {
+            const container = document.getElementById('particle-container');
+            const limit = Math.min(count, 35); // Performance cap
+            for (let i = 0; i < limit; i++) {
+                const heart = document.createElement('div');
+                heart.innerText = ['💖', '🌸', '✨', '🫀', '❤️'][Math.floor(Math.random()*5)];
+                heart.style.position = 'fixed';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '100vh';
+                heart.style.fontSize = (Math.random() * 1.3 + 1) + 'rem';
+                heart.style.opacity = (Math.random() * 0.7 + 0.3).toString();
+                heart.style.pointerEvents = 'none';
+                heart.style.transition = `transform ${Math.random() * 2 + 2.5}s linear, opacity ${Math.random() * 2 + 2.5}s linear`;
+                container.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.style.transform = `translateY(-${Math.random() * 80 + 100}vh) rotate(${Math.random() * 360}deg)`;
+                    heart.style.opacity = '0';
+                }, 40);
+
+                setTimeout(() => {
+                    if (heart.parentNode) heart.parentNode.removeChild(heart);
+                }, 4500);
+            }
+        }
+
+        /* Star Canvas Background Animation */
+        const canvas = document.getElementById('star-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initStars();
+        }
+
+        function initStars() {
+            stars = [];
+            const numStars = Math.floor((canvas.width * canvas.height) / 3500);
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 1.4,
+                    alpha: Math.random(),
+                    speed: Math.random() * 0.008 + 0.003
+                });
+            }
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => {
+                star.alpha += star.speed;
+                if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(star.alpha)})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(animateStars);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        // Initialize Application State on Page Load
+        window.addEventListener('DOMContentLoaded', () => {
+            resizeCanvas();
+            animateStars();
+            loadQuizQuestion();
+
+            // Passive ambient floating heart generator (Lightweight)
+            setInterval(() => {
+                if (document.visibilityState === 'visible') {
+                    createHeartsCluster(1);
+                }
+            }, 3500);
+        });
+    </script>
 </body>
 </html>

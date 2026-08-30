@@ -1109,10 +1109,170 @@ document.querySelectorAll("#options button")
 document.getElementById("quizNext")
 .style.display="inline-block";
 
-}
-
 function nextQuiz(){
 
 qi++;
 
-if(qi<
+if(qi<quiz.length){
+
+renderQuiz();
+
+}else{
+
+document.getElementById("question").textContent="Quiz Complete! 🎉";
+
+document.getElementById("options").innerHTML="";
+
+document.getElementById("quizResult").textContent=
+"You officially passed the Chota Don test. 👑💖";
+
+document.getElementById("quizNext").textContent="NEXT 🫙";
+
+document.getElementById("quizNext").onclick=function(){
+go(11);
+};
+
+}
+
+}
+
+/* MEMORY JAR */
+
+const memories=[
+"Some of our best memories haven't happened yet. 🥹❤️",
+"One day we'll look back at these little moments. ✨",
+"No photo yet... but the story has already started. 💖",
+"A future memory is waiting for us. 🌙",
+"This little website is now one tiny memory. 🫶",
+"Favourite woman. Always. 👑❤️"
+];
+
+function memory(){
+
+document.getElementById("memoryText").textContent=
+memories[Math.floor(Math.random()*memories.length)];
+
+sound(900,.25);
+celebrate(25);
+
+}
+
+/* OPEN WHEN */
+
+function openWhen(type){
+
+let text="";
+
+if(type==="sad"){
+text="If you're sad, please remember that your smile deserves to come back. ❤️";
+}
+
+if(type==="miss"){
+text="If you miss me... look at the moon for a second and smile. Maybe I'm doing the same. 🌙❤️";
+}
+
+if(type==="smile"){
+text="Emergency smile required! 😭💖 Now smile, Chota Don!";
+}
+
+let box=document.getElementById("openText");
+
+box.style.display="block";
+box.textContent=text;
+
+sound(700,.2);
+
+}
+
+/* HEART GAME */
+
+let heartPlaying=false;
+let heartScore=0;
+let heartTime=15;
+let heartTimer;
+
+function startHeartsGame(){
+
+if(heartPlaying)return;
+
+heartPlaying=true;
+heartScore=0;
+heartTime=15;
+
+let heart=document.getElementById("gameHeart");
+let score=document.getElementById("gameScore");
+
+function move(){
+
+if(!heartPlaying)return;
+
+heart.textContent="❤️";
+
+heart.style.transform=
+"translate("+
+(Math.random()*150-75)+"px,"+
+(Math.random()*60-30)+"px)";
+
+heart.onclick=function(){
+
+if(!heartPlaying)return;
+
+heartScore++;
+
+sound(650+Math.random()*250,.08);
+
+heart.textContent="✨";
+
+celebrate(3);
+
+setTimeout(move,100);
+
+};
+
+}
+
+move();
+
+heartTimer=setInterval(()=>{
+
+heartTime--;
+
+score.textContent=
+"Time: "+heartTime+"s | Hearts: "+heartScore;
+
+if(heartTime<=0){
+
+clearInterval(heartTimer);
+
+heartPlaying=false;
+
+heart.textContent="💖";
+
+score.textContent=
+"Game Over! You caught "+heartScore+" hearts! ❤️";
+
+celebrate(70);
+sound(900,.3);
+
+}
+
+},1000);
+
+}
+
+/* PROMISE */
+
+function revealPromise(){
+
+document.getElementById("promise").style.display="block";
+
+sound(600,.4);
+celebrate(120);
+
+}
+
+</script>
+
+</body>
+</html>
+

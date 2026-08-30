@@ -523,15 +523,23 @@ o.stop(audioCtx.currentTime+duration);
 }
 
 function startMovie(){
-bgMusic.volume=.35;
-bgMusic.play().catch(()=>{});
+bgMusic.volume=.7;
+bgMusic.play().then(()=>{
+musicBtn.textContent="🔊 Music ON";
+}).catch(()=>{
+musicBtn.textContent="⚠️ Tap Music";
+});
 sound(700,.2);
 go(2);
 }
 
 function toggleMusic(){
 if(bgMusic.paused){
-bgMusic.play().catch(()=>{});
+bgMusic.play().then(()=>{
+musicBtn.textContent="🔊 Music ON";
+}).catch(()=>{
+musicBtn.textContent="⚠️ Tap Music";
+});
 musicBtn.textContent="🔇 Music OFF";
 sound(700,.15);
 }else{

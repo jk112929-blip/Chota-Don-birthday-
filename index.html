@@ -13,8 +13,8 @@
             --accent-pink: #ff4d8d;
             --accent-glow: #ff75a0;
             --accent-purple: #9d4edd;
-            --glass-bg: rgba(18, 14, 34, 0.72);
-            --glass-border: rgba(255, 255, 255, 0.14);
+            --glass-bg: rgba(18, 14, 34, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.15);
             --text-main: #f8f9fa;
             --text-sub: #d0c7e2;
             --gold-glow: #ffd700;
@@ -45,7 +45,7 @@
             align-items: center;
         }
 
-        /* Ambient Stars & Canvas */
+        /* Ambient Canvas & Stars */
         #star-canvas {
             position: fixed;
             top: 0;
@@ -66,7 +66,7 @@
             z-index: 2;
         }
 
-        /* Fixed Audio Control UI */
+        /* Music Controls UI */
         .audio-control-btn {
             position: fixed;
             top: 18px;
@@ -110,12 +110,6 @@
         .pulse-icon.paused {
             background-color: #777;
             box-shadow: none;
-            animation: none;
-        }
-
-        .pulse-icon.error {
-            background-color: #ff4d4d;
-            box-shadow: 0 0 10px #ff4d4d;
             animation: none;
         }
 
@@ -278,27 +272,29 @@
             transform: scale(0.92);
         }
 
-        /* Emotional Message Container */
-        .message-box {
+        /* Scrollable Message Box for Original Full Message */
+        .full-message-box {
             text-align: left;
-            font-size: 0.93rem;
-            line-height: 1.8;
+            font-size: 0.95rem;
+            line-height: 1.85;
             color: #e2d9f3;
-            max-height: 380px;
+            max-height: 420px;
             overflow-y: auto;
-            padding: 10px 12px 10px 4px;
+            padding: 16px 14px;
             white-space: pre-line;
-            border-radius: 12px;
-            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
         }
 
-        .message-box::-webkit-scrollbar {
-            width: 4px;
+        .full-message-box::-webkit-scrollbar {
+            width: 5px;
         }
 
-        .message-box::-webkit-scrollbar-thumb {
+        .full-message-box::-webkit-scrollbar-thumb {
             background: var(--accent-pink);
-            border-radius: 4px;
+            border-radius: 5px;
         }
 
         /* Reasons Grid */
@@ -327,7 +323,7 @@
             flex-shrink: 0;
         }
 
-        /* Interactive Elements / Cake Canvas */
+        /* Interactive Areas / Cake Canvas */
         .interactive-area {
             position: relative;
             width: 100%;
@@ -538,8 +534,10 @@
     <canvas id="star-canvas"></canvas>
     <div id="particle-container"></div>
 
-    <!-- Audio Element -->
-    <audio id="bg-music" src="song.mp3" loop preload="auto"></audio>
+    <!-- Audio Element with Source -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- Global Music Controls -->
     <button class="audio-control-btn" id="music-toggle" onclick="toggleAudioExplicit()">
@@ -558,7 +556,7 @@
                     Tonight isn't just a birthday wish...<br>
                     It's a little movie made only for you. ❤️
                 </p>
-                <button class="btn-cinematic" onclick="goToScene(2)">ENTER THE MOVIE 🎬</button>
+                <button class="btn-cinematic" onclick="goToScene(2)">UNWRAP GIFT 🎁</button>
             </div>
         </div>
 
@@ -616,41 +614,12 @@
                 <p class="subtitle">
                     Every movie has a scene that changes everything. For me, it was the moment you entered my life.
                 </p>
-                <button class="btn-cinematic" onclick="goToScene(5)">OPEN MY MESSAGE 💌</button>
+                <button class="btn-cinematic" onclick="goToScene(5)">EXPLORE MEMORIES 💌</button>
             </div>
         </div>
 
-        <!-- SCENE 5: MY BIRTHDAY MESSAGE -->
+        <!-- SCENE 5: ROMANTIC REASONS -->
         <div class="scene" id="scene-5">
-            <div class="glass-card">
-                <h3 class="title-cinematic" style="font-size: 1.4rem;">From My Heart</h3>
-                <div class="message-box" id="typewriter-text">
-Happy Birthday Chota Don💖🫀
-
-Ji, ab Mujhe nahin pata kin kiya bolna hota hain or main chahta to ChatGPT se ya kisi or AI se kuch write karken aapko bol skta tha par nahin kiya jii.
-
-Happy Birthday baccha💗🫀
-
-Or main aapko bohot Miss karta hun bohot🤧
-
-kabhi kabhi sochta hun kaash is duniya main sirf ham dono hoten. Sirf aap or main. Aur kahin door pahadon par ghar hota hamara.
-
-Maine pahadon ke kinare novel padh rha hota or aap mere kandhen pr apna sarr rakh-kar voh sunn rahin thi🤧
-
-mujhse kehna to bohot kuch hain par sayad main saari umar kehta rahunga par meri baatein khatam nahin hongi.
-
-I miss you so much jii🫀💗
-
-Love youhhhhhhh💖🫀
-
-Happy Birthday Home💖
-                </div>
-                <button class="btn-cinematic" style="margin-top: 15px;" onclick="goToScene(6)">CONTINUE 💖</button>
-            </div>
-        </div>
-
-        <!-- SCENE 6: ROMANTIC REASONS -->
-        <div class="scene" id="scene-6">
             <div class="glass-card">
                 <h2 class="title-cinematic">Why You Are Special</h2>
                 <div class="reasons-grid">
@@ -671,12 +640,12 @@ Happy Birthday Home💖
                         <div><strong>Your Innocence</strong><br><span style="font-size:0.8rem; color:var(--text-sub);">The subtle, adorable things you do effortlessly.</span></div>
                     </div>
                 </div>
-                <button class="btn-cinematic" onclick="goToScene(7)">NEXT SCENE 🎬</button>
+                <button class="btn-cinematic" onclick="goToScene(6)">MAKE A WISH 🎂</button>
             </div>
         </div>
 
-        <!-- SCENE 7: CAKE CUTTING -->
-        <div class="scene" id="scene-7">
+        <!-- SCENE 6: CAKE CUTTING -->
+        <div class="scene" id="scene-6">
             <div class="glass-card">
                 <h2 class="title-cinematic">Make A Wish</h2>
                 <div class="interactive-area">
@@ -694,8 +663,8 @@ Happy Birthday Home💖
             </div>
         </div>
 
-        <!-- SCENE 8: BALLOON POPPING GAME -->
-        <div class="scene" id="scene-8">
+        <!-- SCENE 7: BALLOON POPPING GAME -->
+        <div class="scene" id="scene-7">
             <div class="glass-card">
                 <h2 class="title-cinematic">Pop The Balloons!</h2>
                 <div class="game-stats">
@@ -704,24 +673,12 @@ Happy Birthday Home💖
                 </div>
                 <div class="game-canvas" id="balloon-canvas"></div>
                 <button class="btn-cinematic" id="balloon-start-btn" onclick="startBalloonGame()">START GAME 🎈</button>
-                <button class="btn-cinematic" id="balloon-next-btn" style="display:none;" onclick="goToScene(9)">NEXT 🎬</button>
+                <button class="btn-cinematic" id="balloon-next-btn" style="display:none;" onclick="goToScene(8)">NEXT 🎬</button>
             </div>
         </div>
 
-        <!-- SCENE 9: CUTE QUIZ -->
-        <div class="scene" id="scene-9">
-            <div class="glass-card">
-                <h2 class="title-cinematic">A Little Quiz</h2>
-                <div id="quiz-container">
-                    <p class="subtitle" id="quiz-question" style="font-weight:600; color:#fff; margin-bottom:15px;"></p>
-                    <div id="quiz-options"></div>
-                </div>
-                <button class="btn-cinematic" id="quiz-next-btn" style="display:none; margin-top:10px;" onclick="nextQuestion()">NEXT QUESTION ➡️</button>
-            </div>
-        </div>
-
-        <!-- SCENE 10: MAGIC MEMORY JAR -->
-        <div class="scene" id="scene-10">
+        <!-- SCENE 8: MAGIC MEMORY JAR -->
+        <div class="scene" id="scene-8">
             <div class="glass-card">
                 <h2 class="title-cinematic">Magic Memory Jar</h2>
                 <p class="subtitle">Tap the jar to draw out a sweet thought 🪄</p>
@@ -729,12 +686,12 @@ Happy Birthday Home💖
                 <p class="subtitle" id="jar-message" style="min-height: 50px; font-style: italic; color: var(--accent-glow);">
                     "Tap the jar..."
                 </p>
-                <button class="btn-cinematic" onclick="goToScene(11)">CONTINUE 🌙</button>
+                <button class="btn-cinematic" onclick="goToScene(9)">OPEN WHEN... ✉️</button>
             </div>
         </div>
 
-        <!-- SCENE 11: OPEN WHEN -->
-        <div class="scene" id="scene-11">
+        <!-- SCENE 9: OPEN WHEN -->
+        <div class="scene" id="scene-9">
             <div class="glass-card">
                 <h2 class="title-cinematic">Open When...</h2>
                 <p class="subtitle">For whenever you need a little warm hug</p>
@@ -746,26 +703,40 @@ Happy Birthday Home💖
                 <div class="glass-card" id="open-when-card" style="display:none; background:rgba(0,0,0,0.3); padding:15px; margin-bottom:15px;">
                     <p id="open-when-text" style="font-size:0.9rem; line-height:1.5; color:#fff;"></p>
                 </div>
-                <button class="btn-cinematic" onclick="goToScene(12)">NEXT SCENE 🎬</button>
+                <button class="btn-cinematic" onclick="goToScene(10)">PLAY FUN QUIZZES 🤪</button>
             </div>
         </div>
 
-        <!-- SCENE 12: HEART CATCHING GAME -->
-        <div class="scene" id="scene-12">
+        <!-- SCENE 10: EXTRA FUNNY QUIZZES -->
+        <div class="scene" id="scene-10">
             <div class="glass-card">
-                <h2 class="title-cinematic">Catch My Heart</h2>
+                <h2 class="title-cinematic">Chota Don Special Quiz</h2>
+                <div id="quiz-container">
+                    <p class="subtitle" id="quiz-question" style="font-weight:600; color:#fff; margin-bottom:15px;"></p>
+                    <div id="quiz-options"></div>
+                </div>
+                <div id="quiz-feedback" style="min-height:25px; margin-top:5px; font-size:0.88rem; font-weight:500;"></div>
+                <button class="btn-cinematic" id="quiz-next-btn" style="display:none; margin-top:10px;" onclick="nextQuestion()">NEXT QUESTION ➡️</button>
+            </div>
+        </div>
+
+        <!-- SCENE 11: ROMANTIC GAME (CATCH MY LOVE) -->
+        <div class="scene" id="scene-11">
+            <div class="glass-card">
+                <h2 class="title-cinematic">Catch My Love ❤️</h2>
+                <p class="subtitle" style="margin-bottom: 10px;">Tap as many falling hearts as you can!</p>
                 <div class="game-stats">
                     <span>Time: <strong id="heart-timer">15</strong>s</span>
-                    <span>Hearts: <strong id="heart-score">0</strong></span>
+                    <span>Score: <strong id="heart-score">0</strong></span>
                 </div>
                 <div class="game-canvas" id="heart-canvas"></div>
                 <button class="btn-cinematic" id="heart-start-btn" onclick="startHeartGame()">START CATCHING 💖</button>
-                <button class="btn-cinematic" id="heart-next-btn" style="display:none;" onclick="goToScene(13)">NEXT 🎬</button>
+                <button class="btn-cinematic" id="heart-next-btn" style="display:none;" onclick="goToScene(12)">NEXT SCENE 🎬</button>
             </div>
         </div>
 
-        <!-- SCENE 13: FUTURE MEMORY -->
-        <div class="scene" id="scene-13">
+        <!-- SCENE 12: RESERVED FRAME & MOUNTAIN DREAM -->
+        <div class="scene" id="scene-12">
             <div class="glass-card">
                 <h2 class="title-cinematic">A Reserved Frame</h2>
                 <div class="photo-frame">
@@ -777,14 +748,10 @@ Happy Birthday Home💖
                     but because some memories haven't happened yet.<br><br>
                     <span class="highlight-text">Reserved for a memory we haven't made yet. ❤️</span>"
                 </p>
-                <button class="btn-cinematic" onclick="goToScene(14)">OUR DREAM 🏔️</button>
-            </div>
-        </div>
+                
+                <hr style="border:0; border-top:1px solid var(--glass-border); margin:20px 0;">
 
-        <!-- SCENE 14: MOUNTAIN DREAM -->
-        <div class="scene" id="scene-14">
-            <div class="glass-card">
-                <h2 class="title-cinematic">Our Mountain Dream</h2>
+                <h2 class="title-cinematic" style="font-size: 1.4rem;">Our Mountain Dream</h2>
                 <div class="mountain-graphic">
                     <div class="moon"></div>
                     <div class="cabin">
@@ -795,23 +762,19 @@ Happy Birthday Home💖
                         <path d="M0,150 L0,90 L120,20 L220,100 L320,40 L420,110 L500,70 L500,150 Z"></path>
                     </svg>
                 </div>
-                <p class="subtitle" style="text-align: left; font-style: italic; font-size: 0.88rem;">
-                    "Sometimes I imagine a little house somewhere in the mountains...<br><br>
-                    A quiet place away from everything.<br><br>
-                    A book in my hands,<br>
-                    you sitting beside me,<br>
-                    your head resting on my shoulder...<br><br>
-                    Nothing extraordinary.<br><br>
-                    Just you.<br>
-                    Just me.<br><br>
-                    And a little home somewhere far away from the noise of the world. 🌙🫀"
+                <p class="subtitle" style="text-align: left; font-style: italic; font-size: 0.88rem; margin-bottom: 15px;">
+                    "Sometimes I imagine a little house somewhere in the mountains...<br>
+                    A quiet place away from everything.<br>
+                    A book in my hands, you sitting beside me...<br>
+                    Just you. Just me. 🌙🫀"
                 </p>
-                <button class="btn-cinematic" onclick="goToScene(15)">MY PROMISE 💍</button>
+
+                <button class="btn-cinematic" onclick="goToScene(13)">FOREVER PROMISE 💍</button>
             </div>
         </div>
 
-        <!-- SCENE 15: PROMISE -->
-        <div class="scene" id="scene-15">
+        <!-- SCENE 13: PROMISE -->
+        <div class="scene" id="scene-13">
             <div class="glass-card">
                 <h2 class="title-cinematic">A Forever Promise</h2>
                 <div id="promise-hidden" style="display:none; margin: 20px 0;">
@@ -826,21 +789,49 @@ Happy Birthday Home💖
                     </p>
                 </div>
                 <button class="btn-cinematic" id="promise-btn" onclick="revealPromise()">OPEN THE PROMISE ❤️</button>
-                <button class="btn-cinematic" id="promise-next-btn" style="display:none;" onclick="goToScene(16)">FINAL SCENE 🎬</button>
+                <button class="btn-cinematic" id="promise-next-btn" style="display:none;" onclick="goToScene(14)">SPECIAL BIRTHDAY WISH 🌸</button>
             </div>
         </div>
 
-        <!-- SCENE 16: FINAL SCENE -->
+        <!-- SCENE 14: EXTRA BEAUTIFUL BIRTHDAY WISH -->
+        <div class="scene" id="scene-14">
+            <div class="glass-card">
+                <div class="title-script">A Special Wish</div>
+                <h2 class="title-cinematic">Happy Birthday To My Favourite Person ✨</h2>
+                <p class="subtitle" style="text-align: left; line-height: 1.8; font-size: 0.95rem;">
+                    Happy Birthday to the person who somehow became one of the most special parts of my life... ❤️<br><br>
+                    Thank you for bringing so much light, warmth, and laughter into my world. Having you around makes everything feel a little softer, a little brighter, and so much more meaningful.<br><br>
+                    May your year ahead be filled with endless smiles, peace, success, and all the love you truly deserve. 🌸✨
+                </p>
+                <button class="btn-cinematic" onclick="goToScene(15)">READ MY FULL LETTER 💌</button>
+            </div>
+        </div>
+
+        <!-- SCENE 15: ORIGINAL UNTOUCHED FULL SPECIAL MESSAGE -->
+        <div class="scene" id="scene-15">
+            <div class="glass-card">
+                <div class="title-script">From My Heart</div>
+                <h2 class="title-cinematic" style="font-size: 1.4rem;">My Letter To You</h2>
+                
+                <div class="full-message-box" id="full-message-text"></div>
+                
+                <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px; flex-wrap: wrap;">
+                    <button class="btn-cinematic" id="keep-reading-btn" style="background: rgba(255,255,255,0.12);" onclick="showInstantFullMessage()">KEEP READING / FULL VIEW 📜</button>
+                    <button class="btn-cinematic" onclick="goToScene(16)">FINAL OUTRO 🌙</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCENE 16: FINAL CINEMATIC OUTRO -->
         <div class="scene" id="scene-16">
             <div class="glass-card">
-                <div style="font-size: 3.5rem; animation: pulse 1.5s infinite alternate; margin-bottom: 10px;" id="final-heart">💖</div>
-                <h1 class="title-cinematic" style="font-size: 2.2rem;">Happy Birthday,<br>Home. 💖</h1>
+                <h2 class="title-cinematic" style="font-size: 2.2rem;">THE END…? 🌙❤️</h2>
                 
-                <p class="subtitle" style="font-style: italic; margin-bottom: 15px;">
-                    "Because home isn't always a place...<br>sometimes, it's a person."
+                <p class="subtitle" style="font-style: italic; margin-bottom: 20px; font-size: 1rem; color: var(--accent-glow);">
+                    "Some stories don't really end…<br>they simply continue in another chapter. ❤️"
                 </p>
 
-                <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: left; font-size: 0.9rem; line-height: 1.8;">
+                <div style="background: rgba(255,255,255,0.04); padding: 18px; border-radius: 16px; margin-bottom: 20px; text-align: left; font-size: 0.92rem; line-height: 1.9; border: 1px solid rgba(255,255,255,0.08);">
                     My Favourite Woman. 👑<br>
                     My safe place. 🫀<br>
                     My favourite person. ❤️<br>
@@ -848,8 +839,10 @@ Happy Birthday Home💖
                     My Home. 🏡
                 </div>
 
-                <p class="title-script" style="font-size: 1.8rem; margin-bottom: 5px;">Happy Birthday, Chota Don. 🎂💖</p>
-                <p class="subtitle" style="font-size: 0.85rem;">May your smile always stay this beautiful. 🌸</p>
+                <div style="font-size: 3.2rem; animation: pulse 1.5s infinite alternate; margin-bottom: 15px;" id="final-heart">💖</div>
+
+                <p class="title-script" style="font-size: 1.8rem; margin-bottom: 5px;">Happy Birthday, Chota Don. ❤️</p>
+                <p class="subtitle" style="font-size: 0.9rem; color: #fff; font-weight: 500;">Always… Home. 🏡</p>
                 
                 <button class="btn-cinematic" onclick="triggerFinalCelebration()">REPLAY CELEBRATION 🎉</button>
             </div>
@@ -858,7 +851,7 @@ Happy Birthday Home💖
     </div>
 
     <script>
-        /* Global Web Audio API Context for UI Sound Effects */
+        /* Global Web Audio API Context for Custom SFX */
         let audioCtx = null;
         function getAudioContext() {
             if (!audioCtx) {
@@ -905,18 +898,12 @@ Happy Birthday Home💖
         const bgMusic = document.getElementById('bg-music');
         const musicPulse = document.getElementById('music-pulse');
         const musicText = document.getElementById('music-text');
-        const musicBtn = document.getElementById('music-toggle');
         
-        bgMusic.volume = 0.35; // 35% background volume
-        let audioFileNotFound = false;
+        bgMusic.volume = 0.4;
         let isAudioPlaying = false;
+        let audioInitialized = false;
 
-        function updateAudioUI(playing, errorMsg = null) {
-            if (errorMsg) {
-                musicPulse.className = "pulse-icon error";
-                musicText.innerText = errorMsg;
-                return;
-            }
+        function updateAudioUI(playing) {
             if (playing) {
                 isAudioPlaying = true;
                 musicPulse.className = "pulse-icon";
@@ -929,21 +916,16 @@ Happy Birthday Home💖
         }
 
         function attemptPlayAudio() {
-            if (audioFileNotFound || isAudioPlaying) return;
             getAudioContext();
+            if (isAudioPlaying) return;
             
             const promise = bgMusic.play();
             if (promise !== undefined) {
                 promise.then(() => {
                     updateAudioUI(true);
+                    audioInitialized = true;
                 }).catch(err => {
-                    if (err.name === "NotSupportedError" || err.message.includes("404") || err.message.includes("supported")) {
-                        audioFileNotFound = true;
-                        updateAudioUI(false, "Song file not found");
-                    } else {
-                        // Autoplay blocked by browser policy
-                        updateAudioUI(false);
-                    }
+                    updateAudioUI(false);
                 });
             }
         }
@@ -952,19 +934,13 @@ Happy Birthday Home💖
             playSound('click');
             getAudioContext();
 
-            if (audioFileNotFound) {
-                alert("The song.mp3 file could not be loaded from your repository.");
-                return;
-            }
-
             if (bgMusic.paused) {
                 const promise = bgMusic.play();
                 if (promise !== undefined) {
                     promise.then(() => {
                         updateAudioUI(true);
                     }).catch(err => {
-                        audioFileNotFound = true;
-                        updateAudioUI(false, "Song file not found");
+                        updateAudioUI(false);
                     });
                 }
             } else {
@@ -973,7 +949,70 @@ Happy Birthday Home💖
             }
         }
 
-        /* Navigation Flow */
+        /* ORIGINAL UNTOUCHED FULL SPECIAL MESSAGE DATA */
+        const originalFullMessage = `Happy Birthday Chota Don💖🫀
+
+Ji, ab Mujhe nahin pata kin kiya bolna hota hain or main chahta to chat gpt sen ya kisi or ai se kuch write karken aapko bol skta tha par nahin kiya matlab Maine pahlen try Kiya tha😅 pr mujhe usmen kuch to kamin lag rahin thi sayad usmen o feeling nahin aa rahin thi or waise bhi aap meri pasandida aurat hain to aapko wish bhin main hun karunga jii chat gpt kon hota hain wish Karen wala esi ki tesin uski😤 ab main kohish karta hun kuch bolnen kin or plz aap hasiyega noii😭 mujhen pata hain aap hasengin😭 par khair🤧 Happy Birthday baccha💗🫀
+
+Or main aapko bohot Miss karta hun bohot🤧 yaad hain jii aapko jab pahli baar maine aapko pookie bola tha phir aapne kaha tha ki pookie kyun pyar ho gya kiya mujhse😆 us waqt to maine mana kr diya tha par maine kabhi socha nahin tha kin aagen chalken kuch esa hoga🤧 us waqt to bass yen ek mazak laga tha or mujhe nahin pata tha kin mera koii esa version bhi hoga I mean aapken paas mera premium access hain jii💖
+
+kabhi kabhi sochta hun aapken layak to nahin hun par bann jaunga dheeren dheeren aapken liyen badal lunga khudkon or pata hain jii aapko aapne ek baar mujhse kaha tha button band rakkha kariye or ek dp change karwayi thi or abhi Maine usin photo ko insta par post kr diya hain jii😅 ik meri harkaten maar khanen ke layak hin hain pr please aap gussa matt hoiyega jii💖
+
+agar maarne ka mann karen to agar in sha allah future main aapsen mila to jee bhar ke thappad maar lijiyega mann karen to chappal bhi chala dijiyega usi main mujhen sab qubool Hain jii🫀
+
+or yaad hain aapko ek baar mainen aapko ek reel bhejin thi insta par jaha ladki chatt or hoti hain or barrish ho rahin hoti hain i guess or ldka neeche road par hota hain to aapko uske reply main mujhse kaha tha wahin se flying chappal aayegi to agar aap chahen to ham voh bhi recreate kar skten hain jii👉🏻👈🏻
+
+alee yr main ye sb kiya bol rha hun😭😭 I am sorry ji bore kar diya aapko🤧
+
+kabhi kabhi sochta hun kaash is duniya main sirf ham dono hoten sirf aap or main or kahin door pahadon par ghar hota hamara maine pahadon ke kinare novel padh rha hota or aap mere kandhen pr apna sarr rakh-kar voh sunn rahin thi🤧
+
+mujhse kehna to bohot kuch hain par sayad main saari umar kehta rahunga par meri baatein khatam nahin hongi
+
+I miss you so much jii🫀💗
+
+Love youhhhhhhh💖🫀
+
+Happy Birthday Home💖`;
+
+        let typewriterTimeout = null;
+        let isTyping = false;
+
+        function startMessageTyping() {
+            const container = document.getElementById('full-message-text');
+            if (!container) return;
+            if (container.getAttribute('data-typed') === 'true') return;
+
+            container.innerText = "";
+            let idx = 0;
+            isTyping = true;
+
+            function typeNextChar() {
+                if (!isTyping) return;
+                if (idx < originalFullMessage.length) {
+                    container.innerText += originalFullMessage.charAt(idx);
+                    idx++;
+                    container.scrollTop = container.scrollHeight;
+                    typewriterTimeout = setTimeout(typeNextChar, 28);
+                } else {
+                    isTyping = false;
+                    container.setAttribute('data-typed', 'true');
+                }
+            }
+            typeNextChar();
+        }
+
+        function showInstantFullMessage() {
+            playSound('click');
+            if (typewriterTimeout) clearTimeout(typewriterTimeout);
+            isTyping = false;
+            const container = document.getElementById('full-message-text');
+            if (container) {
+                container.innerText = originalFullMessage;
+                container.setAttribute('data-typed', 'true');
+            }
+        }
+
+        /* Scene Navigation Engine */
         let currentScene = 1;
         let isTransitioning = false;
 
@@ -984,23 +1023,20 @@ Happy Birthday Home💖
             playSound('click');
             attemptPlayAudio();
 
-            // Clear active mini-game timers upon leaving scene
-            if (currentScene === 8) resetBalloonGame();
-            if (currentScene === 12) resetHeartGame();
+            if (currentScene === 7) resetBalloonGame();
+            if (currentScene === 11) resetHeartGame();
 
             const current = document.getElementById(`scene-${currentScene}`);
             const next = document.getElementById(`scene-${sceneNum}`);
 
-            if (current) {
-                current.classList.remove('active');
-            }
+            if (current) current.classList.remove('active');
 
             setTimeout(() => {
                 currentScene = sceneNum;
                 if (next) {
-                    // Reset scene specific states if re-visited
-                    if (sceneNum === 9) resetQuizState();
-                    if (sceneNum === 7) resetCakeState();
+                    if (sceneNum === 10) resetQuizState();
+                    if (sceneNum === 6) resetCakeState();
+                    if (sceneNum === 15) startMessageTyping();
                     next.classList.add('active');
                 }
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1051,7 +1087,7 @@ Happy Birthday Home💖
             }
         }
 
-        /* Scene 7: Cake Actions & Reset */
+        /* Scene 6: Cake Actions & Reset */
         function blowCandle() {
             playSound('blow');
             document.getElementById('cake-flame').classList.add('off');
@@ -1065,7 +1101,7 @@ Happy Birthday Home💖
             playSound('sparkle');
             createHeartsCluster(30);
             document.getElementById('cake-status').innerText = "Yay! Happy Birthday Chota Don! 🎉";
-            setTimeout(() => goToScene(8), 1500);
+            setTimeout(() => goToScene(7), 1500);
         }
 
         function resetCakeState() {
@@ -1075,7 +1111,7 @@ Happy Birthday Home💖
             document.getElementById('cut-btn').style.display = 'none';
         }
 
-        /* Scene 8: Balloon Mini-Game */
+        /* Scene 7: Balloon Mini-Game */
         let balloonScore = 0;
         let balloonTimer = 15;
         let balloonInterval = null;
@@ -1149,82 +1185,7 @@ Happy Birthday Home💖
             b.addEventListener('pointerdown', popHandler);
         }
 
-        /* Scene 9: Quiz Data & Mechanics */
-        const quizData = [
-            {
-                q: "Who is the most beautiful person in my world?",
-                options: ["Chota Don 👑", "Also Chota Don 💖", "Definitely Chota Don 🫀", "All of the above ❤️"],
-                correct: 3
-            },
-            {
-                q: "Where is our dream house situated?",
-                options: ["In a noisy city", "Far away in the mountains 🏔️", "On a beach", "In space"],
-                correct: 1
-            },
-            {
-                q: "How long will my talks with you last?",
-                options: ["A few hours", "A few days", "My entire life 🫀", "Until tomorrow"],
-                correct: 2
-            }
-        ];
-
-        let currentQuizIndex = 0;
-
-        function resetQuizState() {
-            currentQuizIndex = 0;
-            const container = document.getElementById('quiz-container');
-            container.innerHTML = `
-                <p class="subtitle" id="quiz-question" style="font-weight:600; color:#fff; margin-bottom:15px;"></p>
-                <div id="quiz-options"></div>
-            `;
-            loadQuizQuestion();
-        }
-
-        function loadQuizQuestion() {
-            const q = quizData[currentQuizIndex];
-            document.getElementById('quiz-question').innerText = q.q;
-            const optionsContainer = document.getElementById('quiz-options');
-            optionsContainer.innerHTML = '';
-            document.getElementById('quiz-next-btn').style.display = 'none';
-
-            q.options.forEach((opt, idx) => {
-                const btn = document.createElement('div');
-                btn.className = 'quiz-option';
-                btn.innerText = opt;
-                btn.onclick = () => selectQuizOption(idx, btn);
-                optionsContainer.appendChild(btn);
-            });
-        }
-
-        function selectQuizOption(idx, el) {
-            const q = quizData[currentQuizIndex];
-            const allOptions = document.querySelectorAll('.quiz-option');
-            allOptions.forEach(b => b.onclick = null);
-
-            if (idx === q.correct) {
-                playSound('correct');
-                el.classList.add('correct');
-            } else {
-                playSound('wrong');
-                el.classList.add('wrong');
-                allOptions[q.correct].classList.add('correct');
-            }
-            document.getElementById('quiz-next-btn').style.display = 'inline-block';
-        }
-
-        function nextQuestion() {
-            playSound('click');
-            currentQuizIndex++;
-            if (currentQuizIndex < quizData.length) {
-                loadQuizQuestion();
-            } else {
-                document.getElementById('quiz-container').innerHTML = `<p class="title-script" style="font-size:1.8rem; color:var(--accent-pink);">Quiz Completed! You know my heart completely. ❤️</p>`;
-                document.getElementById('quiz-next-btn').style.display = 'none';
-                setTimeout(() => goToScene(10), 1800);
-            }
-        }
-
-        /* Scene 10: Magic Memory Jar */
+        /* Scene 8: Magic Memory Jar */
         const jarMessages = [
             "Some of our best memories haven't happened yet. 🥹❤️",
             "One day we'll look back at these little moments. ✨",
@@ -1246,7 +1207,7 @@ Happy Birthday Home💖
             createHeartsCluster(6);
         }
 
-        /* Scene 11: Open When Messages */
+        /* Scene 9: Open When Messages */
         const openWhenData = {
             sad: "When you are sad, remember that somewhere out there, I am sending you all my love. You are never alone, baccha. 💖",
             miss: "When you miss me, close your eyes and know that I am missing you even more. You are always in my thoughts. 🤧🫀",
@@ -1261,7 +1222,93 @@ Happy Birthday Home💖
             card.style.display = 'block';
         }
 
-        /* Scene 12: Heart Catching Game */
+        /* Scene 10: Quiz Data & Mechanics (Includes 4 Extra Funny Quizzes) */
+        const quizData = [
+            {
+                q: "Chota Don ka sabse dangerous weapon kya hai? 😤",
+                options: ["Gusse wali look 😳", "Flying Chappal 🩴😂", "Ignore karna 🥺", "Aankhein dikhana 👁️"],
+                correct: 1,
+                reactions: ["Arey waah! Flying chappal strike Direct Hit! 😂🩴", "Nahi nahi, chappal se khatarnak kuch nahi! 😂"]
+            },
+            {
+                q: "Flying chappal se bachne ka best tareeka kya hai? 😂",
+                options: ["Bhaag jao 🏃", "Sorry bolke pookie ban jao 👉🏻👈][", "Kandhe par sarr rakh do 🥹", "Chappal catch kar lo 🧤"],
+                correct: 1,
+                reactions: ["Bingo! Pookie bante hi chappal hawa mein ruk jati hai! 🥹❤️", "Galat! Sirf Pookie banne se hi jaan bachti hai! 😂"]
+            },
+            {
+                q: "Mera premium access kis ke paas hai? 😭❤️",
+                options: ["Kisi ke paas nahi", "ChatGPT ke paas 🤖", "Sirf Chota Don ke paas 👑", "Duniyawaloon ke paas"],
+                correct: 2,
+                reactions: ["Exactly! Sirf aur sirf Chota Don ke paas lifetime access hai! 👑💖", "Areyyy... Sirf Chota Don hi ki malkin hai! 🫀"]
+            },
+            {
+                q: "Agar Chota Don gussa ho jaye to hero ko kya karna chahiye? 😂",
+                options: ["Insta DP change kar lo 😅", "Jee bhar ke thappad/chappal kha lo 😭", "Novel padh ke sunao 📖", "All of the above ❤️"],
+                correct: 3,
+                reactions: ["Sahi javab! Sab qubool hai Chota Don ke samne! 😭❤️", "Yeh sabhi options apply hote hain bhaiya! 😂"]
+            }
+        ];
+
+        let currentQuizIndex = 0;
+
+        function resetQuizState() {
+            currentQuizIndex = 0;
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            const q = quizData[currentQuizIndex];
+            document.getElementById('quiz-question').innerText = q.q;
+            document.getElementById('quiz-feedback').innerText = "";
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+            document.getElementById('quiz-next-btn').style.display = 'none';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('div');
+                btn.className = 'quiz-option';
+                btn.innerText = opt;
+                btn.onclick = () => selectQuizOption(idx, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectQuizOption(idx, el) {
+            const q = quizData[currentQuizIndex];
+            const allOptions = document.querySelectorAll('.quiz-option');
+            const feedback = document.getElementById('quiz-feedback');
+            allOptions.forEach(b => b.onclick = null);
+
+            if (idx === q.correct) {
+                playSound('correct');
+                el.classList.add('correct');
+                feedback.style.color = "#2ecc71";
+                feedback.innerText = q.reactions[0];
+            } else {
+                playSound('wrong');
+                el.classList.add('wrong');
+                allOptions[q.correct].classList.add('correct');
+                feedback.style.color = "#ff6b6b";
+                feedback.innerText = q.reactions[1];
+            }
+            document.getElementById('quiz-next-btn').style.display = 'inline-block';
+        }
+
+        function nextQuestion() {
+            playSound('click');
+            currentQuizIndex++;
+            if (currentQuizIndex < quizData.length) {
+                loadQuizQuestion();
+            } else {
+                document.getElementById('quiz-container').innerHTML = `<p class="title-script" style="font-size:1.8rem; color:var(--accent-pink);">Quiz Complete! You win my whole heart. 😂💖</p>`;
+                document.getElementById('quiz-feedback').innerText = "";
+                document.getElementById('quiz-next-btn').style.display = 'none';
+                setTimeout(() => goToScene(11), 1800);
+            }
+        }
+
+        /* Scene 11: Romantic Heart Catching Game */
         let heartScore = 0;
         let heartTimer = 15;
         let heartInterval = null;
@@ -1288,17 +1335,25 @@ Happy Birthday Home💖
             
             const canvas = document.getElementById('heart-canvas');
 
-            heartSpawnInterval = setInterval(spawnHeart, 650);
+            heartSpawnInterval = setInterval(spawnHeart, 500);
             heartInterval = setInterval(() => {
                 heartTimer--;
                 document.getElementById('heart-timer').innerText = heartTimer;
                 if (heartTimer <= 0) {
                     clearInterval(heartInterval);
                     clearInterval(heartSpawnInterval);
-                    canvas.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; height:100%; color:#fff; font-weight:600; padding:10px;">Hearts Caught: ${heartScore} 🫀</div>`;
+                    
+                    let endMsg = "Okayyy… itna pyaar? 😭❤️";
+                    if (heartScore > 12) endMsg = "Bas bas, dil tod dogi itne hearts collect karken 😂❤️";
+                    
+                    canvas.innerHTML = `<div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100%; color:#fff; font-weight:600; padding:15px; text-align:center;">
+                        <span style="font-size:1.2rem; color:var(--accent-pink); margin-bottom:8px;">Game Over!</span>
+                        <span>Hearts Collected: ${heartScore} 🫀</span>
+                        <p style="margin-top:10px; font-style:italic; color:var(--accent-glow);">${endMsg}</p>
+                    </div>`;
                     document.getElementById('heart-next-btn').style.display = 'inline-block';
                     playSound('sparkle');
-                    createHeartsCluster(20);
+                    createHeartsCluster(25);
                 }
             }, 1000);
         }
@@ -1308,27 +1363,35 @@ Happy Birthday Home💖
             if (!canvas || heartTimer <= 0) return;
             const h = document.createElement('div');
             h.className = 'floating-item';
-            h.innerText = '🫀';
+            h.innerText = ['💖', '🫀', '💗', '❤️', '🌸'][Math.floor(Math.random()*5)];
             h.style.left = Math.random() * 80 + 10 + '%';
-            h.style.top = Math.random() * 70 + 15 + '%';
+            h.style.top = '-10%';
             canvas.appendChild(h);
 
-            setTimeout(() => {
-                if (h.parentNode) h.parentNode.removeChild(h);
-            }, 1100);
+            let pos = -10;
+            const speed = Math.random() * 1.5 + 1.2;
+            const anim = setInterval(() => {
+                pos += speed;
+                h.style.top = pos + '%';
+                if (pos > 110) {
+                    clearInterval(anim);
+                    if (h.parentNode) h.parentNode.removeChild(h);
+                }
+            }, 30);
 
             const catchHandler = (e) => {
                 e.preventDefault();
                 playSound('pop');
                 heartScore++;
                 document.getElementById('heart-score').innerText = heartScore;
+                clearInterval(anim);
                 if (h.parentNode) h.parentNode.removeChild(h);
             };
 
             h.addEventListener('pointerdown', catchHandler);
         }
 
-        /* Scene 15: Promise Reveal */
+        /* Scene 13: Promise Reveal */
         function revealPromise() {
             playSound('sparkle');
             document.getElementById('promise-btn').style.display = 'none';
@@ -1337,16 +1400,16 @@ Happy Birthday Home💖
             createHeartsCluster(25);
         }
 
-        /* Scene 16: Final Celebration */
+        /* Scene 16: Final Outro Celebration */
         function triggerFinalCelebration() {
             playSound('sparkle');
-            createHeartsCluster(35);
+            createHeartsCluster(40);
         }
 
         /* Dynamic Visual Background Particle & Heart System */
         function createHeartsCluster(count) {
             const container = document.getElementById('particle-container');
-            const limit = Math.min(count, 35); // Performance cap
+            const limit = Math.min(count, 35);
             for (let i = 0; i < limit; i++) {
                 const heart = document.createElement('div');
                 heart.innerText = ['💖', '🌸', '✨', '🫀', '❤️'][Math.floor(Math.random()*5)];
@@ -1410,13 +1473,19 @@ Happy Birthday Home💖
 
         window.addEventListener('resize', resizeCanvas);
 
+        /* Global Tap Event Listener for Audio Context & Autoplay Unlock */
+        document.addEventListener('click', () => {
+            getAudioContext();
+            if (!audioInitialized) {
+                attemptPlayAudio();
+            }
+        }, { once: false });
+
         // Initialize Application State on Page Load
         window.addEventListener('DOMContentLoaded', () => {
             resizeCanvas();
             animateStars();
-            loadQuizQuestion();
 
-            // Passive ambient floating heart generator (Lightweight)
             setInterval(() => {
                 if (document.visibilityState === 'visible') {
                     createHeartsCluster(1);
@@ -1426,3 +1495,4 @@ Happy Birthday Home💖
     </script>
 </body>
 </html>
+
